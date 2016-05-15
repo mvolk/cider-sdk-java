@@ -41,7 +41,10 @@
             <property name="maximumStaticImports" value="5"/>
         </properties>
     </rule>
-    <rule ref="rulesets/java/junit.xml"/>
+    <rule ref="rulesets/java/junit.xml">
+        <!-- Standard JUnit assertion messages are adequate when tests are javadoc'd -->
+        <exclude name="JUnitAssertionsShouldIncludeMessage"/>
+    </rule>
     <rule ref="rulesets/java/logging-java.xml"/>
     <rule ref="rulesets/java/naming.xml">
         <exclude name="ShortVariable"/>
