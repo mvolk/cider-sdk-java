@@ -1,4 +1,4 @@
-# cider-sdk-java
+# CiderRef Java SDK
 
 Hard cider models and calculators.
 
