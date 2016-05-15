@@ -17,6 +17,7 @@ repositories {
 dependencies {
     compile 'com.intellij:annotations:12.0'
     testCompile 'junit:junit:4.+'
+    testCompile 'nl.jqno.equalsverifier:equalsverifier:2.0.2'
 }
 
 apply plugin: 'checkstyle'
