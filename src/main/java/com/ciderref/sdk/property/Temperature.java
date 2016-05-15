@@ -24,9 +24,6 @@
 
 package com.ciderref.sdk.property;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 /**
  * Represents a temperature. Provides methods for converting between units of temperature measurement. Immutable and
  * thread-safe.
@@ -41,7 +38,7 @@ public class Temperature implements Comparable<Temperature> {
      * @param temperature the temperature
      * @param units (not null) the unit of measurement in which {code temperature} is expressed
      */
-    public Temperature(double temperature, @NotNull TemperatureUnits units) {
+    public Temperature(double temperature, TemperatureUnits units) {
         this.degreesC = units.convert(temperature, TemperatureUnits.Celsius);
     }
 
@@ -51,7 +48,7 @@ public class Temperature implements Comparable<Temperature> {
      * @param units the unit of measurement in which to return this temperature
      * @return this temperature expressed in the given unit of measurement
      */
-    public double getValue(@NotNull TemperatureUnits units) {
+    public double getValue(TemperatureUnits units) {
         return TemperatureUnits.Celsius.convert(degreesC, units);
     }
 
@@ -59,13 +56,39 @@ public class Temperature implements Comparable<Temperature> {
      * Compares one temperature to another in order from coldest to warmest.
      *
      * @param otherTemperature the other temperature
-     * @return the value {@code 0} if this temperature is the same as {@code t}; a value less than
-     *         {@code 0} if this temperature is cooler than {@code t}; and a value greater than {@code 0}
-     *         if this temperature is warmer than {@code t}.
+     * @return the value {@code 0} if this temperature is the same as {@code otherTemperature}; a value less than
+     *         {@code 0} if this temperature is cooler than {@code otherTemperature}; and a value greater than {@code 0}
+     *         if this temperature is warmer than {@code otherTemperature}.
+     *
+     * @throws NullPointerException if {@code otherTemperature} is null
      */
     @Override
-    public int compareTo(@NotNull Temperature otherTemperature) {
+    public int compareTo(Temperature otherTemperature) {
         return Double.compare(degreesC, otherTemperature.degreesC);
+    }
+
+    /**
+     * Compares this temperature to another temperature.
+     *
+     * @param otherTemperature the other temperature
+     * @return {@code true} if this temperature is warmer than {@code otherTemperature}; {@code false} otherwise.
+     *
+     * @throws NullPointerException if {@code otherTemperature} is null
+     */
+    public boolean isWarmerThan(Temperature otherTemperature) {
+        return compareTo(otherTemperature) > 0;
+    }
+
+    /**
+     * Compares this temperature to another temperature.
+     *
+     * @param otherTemperature the other temperature
+     * @return {@code true} if this temperature is colder than {@code otherTemperature}; {@code false} otherwise.
+     *
+     * @throws NullPointerException if {@code otherTemperature} is null
+     */
+    public boolean isCoolerThan(Temperature otherTemperature) {
+        return compareTo(otherTemperature) < 0;
     }
 
     /**
@@ -82,7 +105,7 @@ public class Temperature implements Comparable<Temperature> {
      * @return true if the two objects are "equal" according to the criteria above.
      */
     @Override
-    public final boolean equals(@Nullable Object other) {
+    public final boolean equals(Object other) {
         return other instanceof Temperature && (other == this || this.compareTo((Temperature) other) == 0);
     }
 

@@ -36,7 +36,7 @@ import org.junit.Test;
 /**
  * Unit tests for {@link Temperature}.
  */
-@SuppressWarnings("PMD.TooManyMethods")
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.ExcessivePublicCount"})
 public class TemperatureTest {
 
     /** 0℃ should be 0℃ ±0. */
@@ -117,10 +117,46 @@ public class TemperatureTest {
         assertEquals(0, new Temperature(0, Celsius).compareTo(new Temperature(0, Celsius)));
     }
 
+    /** 0℃ is not cooler than 0℃. */
+    @Test
+    public void test0CelsiusIsNotCoolerThan0Celsius() {
+        assertFalse(new Temperature(0, Celsius).isCoolerThan(new Temperature(0, Celsius)));
+    }
+
+    /** 0℃ is not warmer than 0℃. */
+    @Test
+    public void test0CelsiusIsNoWarmerThan0Celsius() {
+        assertFalse(new Temperature(0, Celsius).isWarmerThan(new Temperature(0, Celsius)));
+    }
+
     /** -5℃ is colder than 1℃. */
     @Test
     public void testNegative5CelsiusCompareTo1Celsius() {
         assertEquals(-1, new Temperature(-5, Celsius).compareTo(new Temperature(1, Celsius)));
+    }
+
+    /** -5℃ is colder than 1℃. */
+    @Test
+    public void testNegative5CelsiusIsColderThan1Celsius() {
+        assertTrue(new Temperature(-5, Celsius).isCoolerThan(new Temperature(1, Celsius)));
+    }
+
+    /** -5℃ is not warmer than 1℃. */
+    @Test
+    public void testNegative5CelsiusIsNotWarmerThan1Celsius() {
+        assertFalse(new Temperature(-5, Celsius).isWarmerThan(new Temperature(1, Celsius)));
+    }
+
+    /** 1℃ is warmer than -5℃. */
+    @Test
+    public void test1CelsiusIsWarmerThanNegative5Celsius() {
+        assertTrue(new Temperature(1, Celsius).isWarmerThan(new Temperature(-5, Celsius)));
+    }
+
+    /** 1℃ is not cooler than -5℃. */
+    @Test
+    public void test1CelsiusIsNotCoolerThanNegative5Celsius() {
+        assertFalse(new Temperature(1, Celsius).isCoolerThan(new Temperature(-5, Celsius)));
     }
 
     /** 50℃ is warmer than 8℃. */
@@ -129,10 +165,46 @@ public class TemperatureTest {
         assertEquals(1, new Temperature(50, Celsius).compareTo(new Temperature(8, Celsius)));
     }
 
+    /** 50℃ is warmer than 8℃. */
+    @Test
+    public void test50CelsiusIsWarmerThan8Celsius() {
+        assertTrue(new Temperature(50, Celsius).isWarmerThan(new Temperature(8, Celsius)));
+    }
+
+    /** 50℃ is not cooler than 8℃. */
+    @Test
+    public void test50CelsiusIsNotCoolerThan8Celsius() {
+        assertFalse(new Temperature(50, Celsius).isCoolerThan(new Temperature(8, Celsius)));
+    }
+
+    /** 8℃ is cooler than 50℃. */
+    @Test
+    public void test8CelsiusIsCoolerThan50Celsius() {
+        assertTrue(new Temperature(8, Celsius).isCoolerThan(new Temperature(50, Celsius)));
+    }
+
+    /** 8℃ is not warmer than 50℃. */
+    @Test
+    public void test8CelsiusIsNotWarmerThan50Celsius() {
+        assertFalse(new Temperature(8, Celsius).isWarmerThan(new Temperature(50, Celsius)));
+    }
+
     /** 34℉ is just as cold as 34℉. */
     @Test
     public void test34FahrenheitCompareTo34Fahrenheit() {
         assertEquals(0, new Temperature(34, Fahrenheit).compareTo(new Temperature(34, Fahrenheit)));
+    }
+
+    /** 34℉ is not warmer than 34℉. */
+    @Test
+    public void test34FahrenheitIsNotWarmerThan34Fahrenheit() {
+        assertFalse(new Temperature(34, Fahrenheit).isWarmerThan(new Temperature(34, Fahrenheit)));
+    }
+
+    /** 34℉ is not colder than 34℉. */
+    @Test
+    public void test34FahrenheitIsNotColderThan34Fahrenheit() {
+        assertFalse(new Temperature(34, Fahrenheit).isCoolerThan(new Temperature(34, Fahrenheit)));
     }
 
     /** -60℉ is colder than 0℉. */
@@ -141,10 +213,58 @@ public class TemperatureTest {
         assertEquals(-1, new Temperature(-60, Fahrenheit).compareTo(new Temperature(0, Fahrenheit)));
     }
 
+    /** -60℉ is colder than 0℉. */
+    @Test
+    public void testNegative60FahrenheitIsCoolerThan0Fahrenheit() {
+        assertTrue(new Temperature(-60, Fahrenheit).isCoolerThan(new Temperature(0, Fahrenheit)));
+    }
+
+    /** -60℉ is not warmer than 0℉. */
+    @Test
+    public void testNegative60FahrenheitIsNotWarmerThan0Fahrenheit() {
+        assertFalse(new Temperature(-60, Fahrenheit).isWarmerThan(new Temperature(0, Fahrenheit)));
+    }
+
+    /** 0℉ is warmer than -60℉. */
+    @Test
+    public void test0FahrenheitIsWarmerThanNegative60Fahrenheit() {
+        assertTrue(new Temperature(0, Fahrenheit).isWarmerThan(new Temperature(-60, Fahrenheit)));
+    }
+
+    /** 0℉ is not cooler than -60℉. */
+    @Test
+    public void test0FahrenheitIsNotCoolerThanNegative60Fahrenheit() {
+        assertFalse(new Temperature(0, Fahrenheit).isCoolerThan(new Temperature(-60, Fahrenheit)));
+    }
+
     /** 1℉ is warmer than -5℉. */
     @Test
     public void test1FahrenheitCompareToNegative5Fahrenheit() {
         assertEquals(1, new Temperature(1, Fahrenheit).compareTo(new Temperature(-5, Fahrenheit)));
+    }
+
+    /** 1℉ is warmer than -5℉. */
+    @Test
+    public void test1FahrenheitIsWarmerThanNegative5Fahrenheit() {
+        assertTrue(new Temperature(1, Fahrenheit).isWarmerThan(new Temperature(-5, Fahrenheit)));
+    }
+
+    /** 1℉ is not cooler than -5℉. */
+    @Test
+    public void test1FahrenheitIsNotCoolerThanNegative5Fahrenheit() {
+        assertFalse(new Temperature(1, Fahrenheit).isCoolerThan(new Temperature(-5, Fahrenheit)));
+    }
+
+    /** -5℉ is cooler than 1℉. */
+    @Test
+    public void testNegative5FahrenheitIsCoolerThan1Fahrenheit() {
+        assertTrue(new Temperature(-5, Fahrenheit).isCoolerThan(new Temperature(1, Fahrenheit)));
+    }
+
+    /** -5℉ is not warmer than 1℉. */
+    @Test
+    public void testNegative5FahrenheitIsNotWarmerThan1Fahrenheit() {
+        assertFalse(new Temperature(-5, Fahrenheit).isWarmerThan(new Temperature(1, Fahrenheit)));
     }
 
     /** 0℃ is just as cold as 32℉. */
@@ -153,16 +273,97 @@ public class TemperatureTest {
         assertEquals(0, new Temperature(0, Celsius).compareTo(new Temperature(32, Fahrenheit)));
     }
 
+    /** 0℃ is not warmer than 32℉. */
+    @Test
+    public void test0CelsiusIsNotWarmerThan0Fahrenheit() {
+        assertFalse(new Temperature(0, Celsius).isWarmerThan(new Temperature(32, Fahrenheit)));
+    }
+
+    /** 0℃ is not cooler than 32℉. */
+    @Test
+    public void test0CelsiusIsNotCoolerThan0Fahrenheit() {
+        assertFalse(new Temperature(0, Celsius).isCoolerThan(new Temperature(32, Fahrenheit)));
+    }
+
     /** 30℉ is colder than 0℃. */
     @Test
     public void test30FahrenheitCompareTo0Celsius() {
         assertEquals(-1, new Temperature(30, Fahrenheit).compareTo(new Temperature(0, Celsius)));
     }
 
+    /** 30℉ is colder than 0℃. */
+    @Test
+    public void test30FahrenheitIsCooler0Celsius() {
+        assertTrue(new Temperature(30, Fahrenheit).isCoolerThan(new Temperature(0, Celsius)));
+    }
+
+    /** 30℉ is not warmer than 0℃. */
+    @Test
+    public void test30FahrenheitIsNotWarmerThan0Celsius() {
+        assertFalse(new Temperature(30, Fahrenheit).isWarmerThan(new Temperature(0, Celsius)));
+    }
+
+    /** 0℃ is warmer than 30℉. */
+    @Test
+    public void test0CelsiusIsWarmerThan30Fahrenheit() {
+        assertTrue(new Temperature(0, Celsius).isWarmerThan(new Temperature(30, Fahrenheit)));
+    }
+
+    /** 0℃ is not cooler than 30℉. */
+    @Test
+    public void test0CelsiusIsNotCoolerThan30Fahrenheit() {
+        assertFalse(new Temperature(0, Celsius).isCoolerThan(new Temperature(30, Fahrenheit)));
+    }
+
     /** 50℃ is warmer than 50℉. */
     @Test
     public void test50CelsiusCompareTo50Fahrenheit() {
         assertEquals(1, new Temperature(50, Celsius).compareTo(new Temperature(50, Fahrenheit)));
+    }
+
+    /** 50℃ is warmer than 50℉. */
+    @Test
+    public void test50CelsiusIsWarmerThan50Fahrenheit() {
+        assertTrue(new Temperature(50, Celsius).isWarmerThan(new Temperature(50, Fahrenheit)));
+    }
+
+    /** 50℃ is not cooler than 50℉. */
+    @Test
+    public void test50CelsiusIsNotCoolerThan50Fahrenheit() {
+        assertFalse(new Temperature(50, Celsius).isCoolerThan(new Temperature(50, Fahrenheit)));
+    }
+
+    /** 50℉ is not warmer than 50℃. */
+    @Test
+    public void test50FahrenheitIsNotWarmerThan50Celsius() {
+        assertFalse(new Temperature(50, Fahrenheit).isWarmerThan(new Temperature(50, Celsius)));
+    }
+
+    /** 50℉ is cooler than 50℃. */
+    @Test
+    public void test50FahrenheitIsCoolerThan50Celsius() {
+        assertTrue(new Temperature(50, Fahrenheit).isCoolerThan(new Temperature(50, Celsius)));
+    }
+
+    /** Comparison to null yields a NPE. */
+    @Test(expected = NullPointerException.class)
+    public void test50CelsiusCompareToNull() {
+        //noinspection ConstantConditions
+        new Temperature(50, Celsius).compareTo(null);
+    }
+
+    /** Comparison to null yields a NPE. */
+    @Test(expected = NullPointerException.class)
+    public void test50CelsiusIsWarmerThanNull() {
+        //noinspection ConstantConditions
+        new Temperature(50, Celsius).isWarmerThan(null);
+    }
+
+    /** Comparison to null yields a NPE. */
+    @Test(expected = NullPointerException.class)
+    public void test50CelsiusIsCoolerThanNull() {
+        //noinspection ConstantConditions
+        new Temperature(50, Celsius).isCoolerThan(null);
     }
 
     /** 50℃ is not equal to null. */
@@ -202,6 +403,7 @@ public class TemperatureTest {
 
     /** Java .equals(Object) contract is met. */
     @Test
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     public void equalsContract() {
         EqualsVerifier.forClass(Temperature.class).verify();
     }

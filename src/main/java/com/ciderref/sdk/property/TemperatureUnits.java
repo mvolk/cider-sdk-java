@@ -24,8 +24,6 @@
 
 package com.ciderref.sdk.property;
 
-import org.jetbrains.annotations.NotNull;
-
 /**
  * Units of measurement for temperature with methods for conversion between units of measurement.
  */
@@ -83,8 +81,7 @@ public enum TemperatureUnits {
     private final String symbol;
     private final ConversionLogic conversionLogic;
 
-    TemperatureUnits(@NotNull String name, @NotNull String symbol,
-                     @NotNull ConversionLogic conversionLogic) {
+    TemperatureUnits(String name, String symbol, ConversionLogic conversionLogic) {
         this.name = name;
         this.symbol = symbol;
         this.conversionLogic = conversionLogic;
@@ -95,7 +92,6 @@ public enum TemperatureUnits {
      *
      * @return the full name of this unit of measure
      */
-    @NotNull
     public String getName() {
         return name;
     }
@@ -105,7 +101,6 @@ public enum TemperatureUnits {
      *
      * @return shorthand notation for this unit of measure.
      */
-    @NotNull
     public String getSymbol() {
         return symbol;
     }
