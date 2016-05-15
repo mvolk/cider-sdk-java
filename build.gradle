@@ -11,3 +11,15 @@ repositories {
 
 dependencies {
 }
+
+apply plugin: 'checkstyle'
+checkstyle {
+    toolVersion = "6.18"
+}
+tasks.withType(Checkstyle) {
+    reports {
+        xml.enabled false
+        html.enabled true
+        html.stylesheet resources.text.fromFile('config/checkstyle/checkstyle-noframes-severity-sorted.xsl')
+    }
+}
