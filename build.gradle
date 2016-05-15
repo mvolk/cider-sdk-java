@@ -30,3 +30,16 @@ pmd {
     consoleOutput = true
     toolVersion = "5.4.1"
 }
+
+apply plugin: 'jacoco'
+jacoco {
+    toolVersion = "0.7.6.201602180812"
+}
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.destination "$project.buildDir/reports/jacoco-html"
+    }
+}
+check.dependsOn jacocoTestReport
