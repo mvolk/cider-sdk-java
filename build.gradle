@@ -18,8 +18,6 @@ checkstyle {
 }
 tasks.withType(Checkstyle) {
     reports {
-        xml.enabled false
-        html.enabled true
-        html.stylesheet resources.text.fromFile('config/checkstyle/checkstyle-noframes-severity-sorted.xsl')
+        xml.enabled true
     }
 }
