@@ -21,3 +21,12 @@ tasks.withType(Checkstyle) {
         xml.enabled true
     }
 }
+
+apply plugin: 'pmd'
+pmd {
+    sourceSets = [sourceSets.main, sourceSets.test]
+    reportsDir = file("$project.buildDir/reports/pmd")
+    ruleSetFiles = files("config/pmd/ruleset.xml")
+    consoleOutput = true
+    toolVersion = "5.4.1"
+}
