@@ -3,6 +3,11 @@ apply plugin: 'idea'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
+def bootstrapClassPath = "${System.getenv()['JAVA_HOME']}/jre/lib/rt.jar"
+project.tasks.withType(AbstractCompile, { AbstractCompile ac ->
+    ac.options.bootClasspath = bootstrapClassPath
+})
+
 version = '0.1.0'
 
 repositories {
