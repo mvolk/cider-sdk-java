@@ -263,6 +263,12 @@ public class SpecificGravityTest {
         assertEquals(-1, new SpecificGravity(1.020).compareTo(new SpecificGravity(1.030)));
     }
 
+    /** Comparison with null throws NPE. */
+    @Test(expected = NullPointerException.class)
+    public void testCompareToNullValue() {
+        new SpecificGravity(1.020).compareTo(null);
+    }
+
     /** Java .equals(Object) contract is met. */
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")

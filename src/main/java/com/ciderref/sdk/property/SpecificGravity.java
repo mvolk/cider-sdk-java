@@ -114,7 +114,7 @@ public class SpecificGravity implements Comparable<SpecificGravity> {
      */
     @Override
     public int compareTo(SpecificGravity otherSpecificGravity) {
-        return otherSpecificGravity == null ? 1 : Double.compare(value, otherSpecificGravity.value);
+        return Double.compare(value, otherSpecificGravity.value);
     }
 
     /**
