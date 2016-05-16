@@ -49,10 +49,14 @@ public class Water {
      *                    {@link #STANDARD_BOILING_POINT} inclusive.
      * @return the density of the water in g/L at the given temperature.
      *
+     * @throws IllegalArgumentException if {@code temperature} is {@code null}
      * @throws IllegalPropertyValueException if {@code temperature} is below {@link #STANDARD_FREEZING_POINT} or
      *         exceeds {@link #STANDARD_BOILING_POINT}
      */
     public double getDensity(Temperature temperature) {
+        if (temperature == null) {
+            throw new IllegalArgumentException("The temperature argument may not be null.");
+        }
         if (temperature.isCoolerThan(STANDARD_FREEZING_POINT) || temperature.isWarmerThan(STANDARD_BOILING_POINT)) {
             throw new IllegalPropertyValueException("The CiderRef SDK can only calculate the density of pure water "
                     + "at standard pressure in its liquid state. Pure water at standard pressure is not a liquid at "

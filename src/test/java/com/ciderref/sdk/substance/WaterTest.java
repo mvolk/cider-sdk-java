@@ -178,4 +178,10 @@ public class WaterTest {
         assertEquals(958.6, water.getDensity(new Temperature(100, TemperatureUnits.Celsius)), 0.1);
     }
 
+    /** getDensity throws if temperature argument is null. */
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetDensityAtNullTemperatureThrows() {
+        water.getDensity(null);
+    }
+
 }
