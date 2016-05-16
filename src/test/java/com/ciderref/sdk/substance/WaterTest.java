@@ -28,7 +28,6 @@ import static org.junit.Assert.assertEquals;
 
 import com.ciderref.sdk.property.IllegalPropertyValueException;
 import com.ciderref.sdk.property.Temperature;
-import com.ciderref.sdk.property.TemperatureUnits;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -55,127 +54,127 @@ public class WaterTest {
     /** Freezing point is correct. */
     @Test
     public void testStandardFreezingPoint() {
-        assertEquals(0, Water.STANDARD_FREEZING_POINT.getValue(TemperatureUnits.Celsius), 0);
+        assertEquals(0, Water.STANDARD_FREEZING_POINT.getValue(Temperature.Units.Celsius), 0);
     }
 
     /** Boiling point is correct. */
     @Test
     public void testStandardBoilingPoint() {
-        assertEquals(100, Water.STANDARD_BOILING_POINT.getValue(TemperatureUnits.Celsius), 0);
+        assertEquals(100, Water.STANDARD_BOILING_POINT.getValue(Temperature.Units.Celsius), 0);
     }
 
     /** getDensity throws if temperature is below freezing. */
     @Test(expected = IllegalPropertyValueException.class)
     public void testGetDensityOfIce() {
-        water.getDensity(new Temperature(31.99, TemperatureUnits.Fahrenheit));
+        water.getDensity(new Temperature(31.99, Temperature.Units.Fahrenheit));
     }
 
     /** getDensity throws if temperature is above boiling. */
     @Test(expected = IllegalPropertyValueException.class)
     public void testGetDensityOfWaterVapor() {
-        water.getDensity(new Temperature(212.01, TemperatureUnits.Fahrenheit));
+        water.getDensity(new Temperature(212.01, Temperature.Units.Fahrenheit));
     }
 
     /** getDensity returns 999.8 g/L ±0.10 at 0℃. */
     @Test
     public void testGetDensityOfWaterAt0Celsius() {
-        assertEquals(999.8, water.getDensity(new Temperature(0, TemperatureUnits.Celsius)), 0.1);
+        assertEquals(999.8, water.getDensity(new Temperature(0, Temperature.Units.Celsius)), 0.1);
     }
 
     /** getDensity returns 1000.0 g/L ±0.1 at 4℃. */
     @Test
     public void testGetDensityOfWaterAt4Celsius() {
-        assertEquals(1000.0, water.getDensity(new Temperature(4, TemperatureUnits.Celsius)), 0.1);
+        assertEquals(1000.0, water.getDensity(new Temperature(4, Temperature.Units.Celsius)), 0.1);
     }
 
     /** getDensity returns 1000.0 g/L ±0.1 at 5℃. */
     @Test
     public void testGetDensityOfWaterAt5Celsius() {
-        assertEquals(1000.0, water.getDensity(new Temperature(5, TemperatureUnits.Celsius)), 0.1);
+        assertEquals(1000.0, water.getDensity(new Temperature(5, Temperature.Units.Celsius)), 0.1);
     }
 
     /** getDensity returns 999.7 g/L ±0.05 at 10℃. */
     @Test
     public void testGetDensityOfWaterAt10Celsius() {
-        assertEquals(999.7, water.getDensity(new Temperature(10, TemperatureUnits.Celsius)), 0.05);
+        assertEquals(999.7, water.getDensity(new Temperature(10, Temperature.Units.Celsius)), 0.05);
     }
 
     /** getDensity returns 999.0 g/L ±0.05 at 60℉. */
     @Test
     public void testGetDensityOfWaterAt60Fahrenheit() {
-        assertEquals(999.0, water.getDensity(new Temperature(60, TemperatureUnits.Fahrenheit)), 0.05);
+        assertEquals(999.0, water.getDensity(new Temperature(60, Temperature.Units.Fahrenheit)), 0.05);
     }
 
     /** getDensity returns 998.2 g/L ±0.05 at 20℃. */
     @Test
     public void testGetDensityOfWaterAt15Celsius() {
-        assertEquals(998.2, water.getDensity(new Temperature(20, TemperatureUnits.Celsius)), 0.05);
+        assertEquals(998.2, water.getDensity(new Temperature(20, Temperature.Units.Celsius)), 0.05);
     }
 
     /** getDensity returns 997.0 g/L ±0.1 at 25℃. */
     @Test
     public void testGetDensityOfWaterAt25Celsius() {
-        assertEquals(997.0, water.getDensity(new Temperature(25, TemperatureUnits.Celsius)), 0.1);
+        assertEquals(997.0, water.getDensity(new Temperature(25, Temperature.Units.Celsius)), 0.1);
     }
 
     /** getDensity returns 995.7 g/L ±0.1 at 30℃. */
     @Test
     public void testGetDensityOfWaterAt30Celsius() {
-        assertEquals(995.7, water.getDensity(new Temperature(30, TemperatureUnits.Celsius)), 0.1);
+        assertEquals(995.7, water.getDensity(new Temperature(30, Temperature.Units.Celsius)), 0.1);
     }
 
     /** getDensity returns 994.1 g/L ±0.1 at 35℃. */
     @Test
     public void testGetDensityOfWaterAt35Celsius() {
-        assertEquals(994.1, water.getDensity(new Temperature(35, TemperatureUnits.Celsius)), 0.1);
+        assertEquals(994.1, water.getDensity(new Temperature(35, Temperature.Units.Celsius)), 0.1);
     }
 
     /** getDensity returns 992.2 g/L ±0.1 at 40℃. */
     @Test
     public void testGetDensityOfWaterAt40Celsius() {
-        assertEquals(992.2, water.getDensity(new Temperature(40, TemperatureUnits.Celsius)), 0.1);
+        assertEquals(992.2, water.getDensity(new Temperature(40, Temperature.Units.Celsius)), 0.1);
     }
 
     /** getDensity returns 990.2 g/L ±0.1 at 45℃. */
     @Test
     public void testGetDensityOfWaterAt45Celsius() {
-        assertEquals(990.2, water.getDensity(new Temperature(45, TemperatureUnits.Celsius)), 0.1);
+        assertEquals(990.2, water.getDensity(new Temperature(45, Temperature.Units.Celsius)), 0.1);
     }
 
     /** getDensity returns 988.1 g/L ±0.1 at 50℃. */
     @Test
     public void testGetDensityOfWaterAt50Celsius() {
-        assertEquals(988.1, water.getDensity(new Temperature(50, TemperatureUnits.Celsius)), 0.1);
+        assertEquals(988.1, water.getDensity(new Temperature(50, Temperature.Units.Celsius)), 0.1);
     }
 
     /** getDensity returns 983.2 g/L ±0.1 at 60℃. */
     @Test
     public void testGetDensityOfWaterAt60Celsius() {
-        assertEquals(983.2, water.getDensity(new Temperature(60, TemperatureUnits.Celsius)), 0.1);
+        assertEquals(983.2, water.getDensity(new Temperature(60, Temperature.Units.Celsius)), 0.1);
     }
 
     /** getDensity returns 977.8 g/L ±0.1 at 70℃. */
     @Test
     public void testGetDensityOfWaterAt70Celsius() {
-        assertEquals(977.8, water.getDensity(new Temperature(70, TemperatureUnits.Celsius)), 0.1);
+        assertEquals(977.8, water.getDensity(new Temperature(70, Temperature.Units.Celsius)), 0.1);
     }
 
     /** getDensity returns 971.8 g/L ±0.1 at 80℃. */
     @Test
     public void testGetDensityOfWaterAt80Celsius() {
-        assertEquals(971.8, water.getDensity(new Temperature(80, TemperatureUnits.Celsius)), 0.1);
+        assertEquals(971.8, water.getDensity(new Temperature(80, Temperature.Units.Celsius)), 0.1);
     }
 
     /** getDensity returns 965.3 g/L ±0.1 at 90℃. */
     @Test
     public void testGetDensityOfWaterAt90Celsius() {
-        assertEquals(965.3, water.getDensity(new Temperature(90, TemperatureUnits.Celsius)), 0.1);
+        assertEquals(965.3, water.getDensity(new Temperature(90, Temperature.Units.Celsius)), 0.1);
     }
 
     /** getDensity returns 958.6 g/L ±0.1 at 100℃. */
     @Test
     public void testGetDensityOfWaterAt100Celsius() {
-        assertEquals(958.6, water.getDensity(new Temperature(100, TemperatureUnits.Celsius)), 0.1);
+        assertEquals(958.6, water.getDensity(new Temperature(100, Temperature.Units.Celsius)), 0.1);
     }
 
     /** getDensity throws if temperature argument is null. */

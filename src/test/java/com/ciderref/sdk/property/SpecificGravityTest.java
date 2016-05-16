@@ -40,7 +40,7 @@ import org.junit.Test;
 public class SpecificGravityTest {
 
     private static final Temperature FREEZING = Water.STANDARD_FREEZING_POINT;
-    private static final Temperature ROOM_TEMPERATURE = new Temperature(68, TemperatureUnits.Fahrenheit);
+    private static final Temperature ROOM_TEMPERATURE = new Temperature(68, Temperature.Units.Fahrenheit);
     private static final Temperature BOILING = Water.STANDARD_BOILING_POINT;
 
     /** Constructor throws if the specific gravity is too low. */
@@ -145,13 +145,13 @@ public class SpecificGravityTest {
     /** Correcting constructor throws if the measured temperature is too high. */
     @Test(expected = IllegalPropertyValueException.class)
     public void testCorrectingConstructorMeasuredTemperatureTooHigh() {
-        new SpecificGravity(1.0, new Temperature(100.01, TemperatureUnits.Celsius), ROOM_TEMPERATURE);
+        new SpecificGravity(1.0, new Temperature(100.01, Temperature.Units.Celsius), ROOM_TEMPERATURE);
     }
 
     /** Correcting constructor throws if the measured temperature is too low. */
     @Test(expected = IllegalPropertyValueException.class)
     public void testCorrectingConstructorMeasuredTemperatureTooLow() {
-        new SpecificGravity(1.0, new Temperature(-0.01, TemperatureUnits.Celsius), ROOM_TEMPERATURE);
+        new SpecificGravity(1.0, new Temperature(-0.01, Temperature.Units.Celsius), ROOM_TEMPERATURE);
     }
 
     /** Correcting constructor accepts a measured temperature at the maximum supported temperature. */
@@ -177,13 +177,13 @@ public class SpecificGravityTest {
     /** Correcting constructor throws if the calibration temperature is too high. */
     @Test(expected = IllegalPropertyValueException.class)
     public void testCorrectingConstructorCalibrationTemperatureTooHigh() {
-        new SpecificGravity(1.0, ROOM_TEMPERATURE, new Temperature(100.01, TemperatureUnits.Celsius));
+        new SpecificGravity(1.0, ROOM_TEMPERATURE, new Temperature(100.01, Temperature.Units.Celsius));
     }
 
     /** Correcting constructor throws if the calibration temperature is too low. */
     @Test(expected = IllegalPropertyValueException.class)
     public void testCorrectingConstructorCalibrationTemperatureTooLow() {
-        new SpecificGravity(1.0, ROOM_TEMPERATURE, new Temperature(-0.01, TemperatureUnits.Celsius));
+        new SpecificGravity(1.0, ROOM_TEMPERATURE, new Temperature(-0.01, Temperature.Units.Celsius));
     }
 
     /** Correcting constructor accepts a calibration temperature at the maximum limit. */
@@ -209,8 +209,8 @@ public class SpecificGravityTest {
     /** Correcting constructor correctly corrects 1.020 at 43℉ with hydrometer calibrated at 60℉. */
     @Test
     public void testCorrectingConstructorCorrectAt43Fahrenheit() {
-        Temperature measuredTemperature = new Temperature(43, TemperatureUnits.Fahrenheit);
-        Temperature calibrationTemperature = new Temperature(60, TemperatureUnits.Fahrenheit);
+        Temperature measuredTemperature = new Temperature(43, Temperature.Units.Fahrenheit);
+        Temperature calibrationTemperature = new Temperature(60, Temperature.Units.Fahrenheit);
         SpecificGravity correctedSg = new SpecificGravity(1.020, measuredTemperature, calibrationTemperature);
         assertEquals(1.0190, correctedSg.getValue(), 0.0001);
     }
@@ -218,8 +218,8 @@ public class SpecificGravityTest {
     /** Correcting constructor correctly corrects 1.020 at 50℉ with hydrometer calibrated at 60℉. */
     @Test
     public void testCorrectingConstructorCorrectAt50Fahrenheit() {
-        Temperature measuredTemperature = new Temperature(50, TemperatureUnits.Fahrenheit);
-        Temperature calibrationTemperature = new Temperature(60, TemperatureUnits.Fahrenheit);
+        Temperature measuredTemperature = new Temperature(50, Temperature.Units.Fahrenheit);
+        Temperature calibrationTemperature = new Temperature(60, Temperature.Units.Fahrenheit);
         SpecificGravity correctedSg = new SpecificGravity(1.020, measuredTemperature, calibrationTemperature);
         assertEquals(1.0193, correctedSg.getValue(), 0.0001);
     }
@@ -227,8 +227,8 @@ public class SpecificGravityTest {
     /** Correcting constructor correctly corrects 1.020 at 60℉ with hydrometer calibrated at 60℉. */
     @Test
     public void testCorrectingConstructorCorrectAt60Fahrenheit() {
-        Temperature measuredTemperature = new Temperature(60, TemperatureUnits.Fahrenheit);
-        Temperature calibrationTemperature = new Temperature(60, TemperatureUnits.Fahrenheit);
+        Temperature measuredTemperature = new Temperature(60, Temperature.Units.Fahrenheit);
+        Temperature calibrationTemperature = new Temperature(60, Temperature.Units.Fahrenheit);
         SpecificGravity correctedSg = new SpecificGravity(1.020, measuredTemperature, calibrationTemperature);
         assertEquals(1.020, correctedSg.getValue(), 0.0001);
     }
@@ -236,8 +236,8 @@ public class SpecificGravityTest {
     /** Correcting constructor correctly corrects 1.020 at 65℉ with hydrometer calibrated at 60℉. */
     @Test
     public void testCorrectingConstructorCorrectAt65Fahrenheit() {
-        Temperature measuredTemperature = new Temperature(65, TemperatureUnits.Fahrenheit);
-        Temperature calibrationTemperature = new Temperature(60, TemperatureUnits.Fahrenheit);
+        Temperature measuredTemperature = new Temperature(65, Temperature.Units.Fahrenheit);
+        Temperature calibrationTemperature = new Temperature(60, Temperature.Units.Fahrenheit);
         SpecificGravity correctedSg = new SpecificGravity(1.020, measuredTemperature, calibrationTemperature);
         assertEquals(1.0205, correctedSg.getValue(), 0.0001);
     }
@@ -245,8 +245,8 @@ public class SpecificGravityTest {
     /** Correcting constructor correctly corrects 1.020 at 70℉ with hydrometer calibrated at 60℉. */
     @Test
     public void testCorrectingConstructorCorrectAt70Fahrenheit() {
-        Temperature measuredTemperature = new Temperature(70, TemperatureUnits.Fahrenheit);
-        Temperature calibrationTemperature = new Temperature(60, TemperatureUnits.Fahrenheit);
+        Temperature measuredTemperature = new Temperature(70, Temperature.Units.Fahrenheit);
+        Temperature calibrationTemperature = new Temperature(60, Temperature.Units.Fahrenheit);
         SpecificGravity correctedSg = new SpecificGravity(1.020, measuredTemperature, calibrationTemperature);
         assertEquals(1.021, correctedSg.getValue(), 0.0001);
     }
@@ -254,8 +254,8 @@ public class SpecificGravityTest {
     /** Correcting constructor correctly corrects 1.020 at 77℉ with hydrometer calibrated at 60℉. */
     @Test
     public void testCorrectingConstructorCorrectAt77Fahrenheit() {
-        Temperature measuredTemperature = new Temperature(77, TemperatureUnits.Fahrenheit);
-        Temperature calibrationTemperature = new Temperature(60, TemperatureUnits.Fahrenheit);
+        Temperature measuredTemperature = new Temperature(77, Temperature.Units.Fahrenheit);
+        Temperature calibrationTemperature = new Temperature(60, Temperature.Units.Fahrenheit);
         SpecificGravity correctedSg = new SpecificGravity(1.020, measuredTemperature, calibrationTemperature);
         assertEquals(1.022, correctedSg.getValue(), 0.0001);
     }
@@ -263,8 +263,8 @@ public class SpecificGravityTest {
     /** Correcting constructor correctly corrects 1.020 at 84℉ with hydrometer calibrated at 60℉. */
     @Test
     public void testCorrectingConstructorCorrectAt84Fahrenheit() {
-        Temperature measuredTemperature = new Temperature(84, TemperatureUnits.Fahrenheit);
-        Temperature calibrationTemperature = new Temperature(60, TemperatureUnits.Fahrenheit);
+        Temperature measuredTemperature = new Temperature(84, Temperature.Units.Fahrenheit);
+        Temperature calibrationTemperature = new Temperature(60, Temperature.Units.Fahrenheit);
         SpecificGravity correctedSg = new SpecificGravity(1.020, measuredTemperature, calibrationTemperature);
         assertEquals(1.023, correctedSg.getValue(), 0.0001);
     }

@@ -25,10 +25,11 @@
 package com.ciderref.sdk.property;
 
 /**
- * Represents a temperature. Provides methods for converting between units of temperature measurement. Immutable and
- * thread-safe.
+ * Represents a temperature. Immutable and thread-safe.
  */
 public class Temperature implements Comparable<Temperature> {
+
+    public enum Units { Celsius, Fahrenheit }
 
     private final double degreesC;
 
@@ -36,20 +37,36 @@ public class Temperature implements Comparable<Temperature> {
      * Constructor.
      *
      * @param temperature the temperature
-     * @param units (not null) the unit of measurement in which {code temperature} is expressed
+     * @param units (not null) the unit of measurement in which {@code temperature} is expressed
+     *
+     * @throws NullPointerException if {@code units} is null
      */
-    public Temperature(double temperature, TemperatureUnits units) {
-        this.degreesC = units.convert(temperature, TemperatureUnits.Celsius);
+    public Temperature(double temperature, Units units) {
+        if (units == null) {
+            throw new IllegalArgumentException("Temperature cannot be represented without units of measurement.");
+        } else if (units == Units.Celsius) {
+            this.degreesC = temperature;
+        } else {
+            this.degreesC = (temperature - 32.0) * 5.0 / 9.0;
+        }
     }
 
     /**
      * This temperature expressed in a specific unit of measurement.
      *
-     * @param units the unit of measurement in which to return this temperature
+     * @param units (not null) the unit of measurement in which to return this temperature
      * @return this temperature expressed in the given unit of measurement
+     *
+     * @throws IllegalArgumentException if {@code units} is null
      */
-    public double getValue(TemperatureUnits units) {
-        return TemperatureUnits.Celsius.convert(degreesC, units);
+    public double getValue(Units units) {
+        if (units == null) {
+            throw new IllegalArgumentException("Temperature cannot be represented without units of measurement.");
+        } else if (units == Units.Celsius) {
+            return degreesC;
+        } else {
+            return degreesC * 9.0 / 5.0 + 32.0;
+        }
     }
 
     /**
@@ -96,8 +113,8 @@ public class Temperature implements Comparable<Temperature> {
      *
      * <p>This object is "equal" to another object if and only if:
      * <ul>
-     *     <li>The other object is not null</li>
-     *     <li>The other object is an {code instanceof} this class</li>
+     *     <li>The other object is not {@code null}</li>
+     *     <li>The other object is an {@code instanceof} this class</li>
      *     <li>This object {@link #compareTo(Temperature)} the other object returns {@code 0} (equivalent)</li>
      * </ul>
      *

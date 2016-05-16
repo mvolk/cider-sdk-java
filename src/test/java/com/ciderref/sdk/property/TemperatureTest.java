@@ -24,8 +24,8 @@
 
 package com.ciderref.sdk.property;
 
-import static com.ciderref.sdk.property.TemperatureUnits.Celsius;
-import static com.ciderref.sdk.property.TemperatureUnits.Fahrenheit;
+import static com.ciderref.sdk.property.Temperature.Units.Celsius;
+import static com.ciderref.sdk.property.Temperature.Units.Fahrenheit;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -36,8 +36,32 @@ import org.junit.Test;
 /**
  * Unit tests for {@link Temperature}.
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.ExcessivePublicCount"})
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.ExcessivePublicCount", "PMD.GodClass"})
 public class TemperatureTest {
+
+    /** Temperature.Units.values() should return 2 enums */
+    @Test
+    public void testTwoValues() {
+        assertEquals(2, Temperature.Units.values().length);
+    }
+
+    /** Temperature.Units.valueOf("Celsius") should return Celsius */
+    @Test
+    public void testValueOfCelsius() {
+        assertEquals(Celsius, Temperature.Units.valueOf("Celsius"));
+    }
+
+    /** Temperature.Units.valueOf("Fahrenheit") should return Fahrenheit */
+    @Test
+    public void testValueOfFahrenheit() {
+        assertEquals(Fahrenheit, Temperature.Units.valueOf("Fahrenheit"));
+    }
+
+    /** Constructing with null units of measurement produces an exception. */
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructorNullUnitsThrows() {
+        new Temperature(212, null);
+    }
 
     /** 0℃ should be 0℃ ±0. */
     @Test
@@ -109,6 +133,12 @@ public class TemperatureTest {
     @Test
     public void test212FahrenheitIs100Fahrenheit() {
         assertEquals(100, new Temperature(212, Fahrenheit).getValue(Celsius), 0);
+    }
+
+    /** getValue(null) throws. */
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetValueWithNullUnitsThrows() {
+        new Temperature(212, Fahrenheit).getValue(null);
     }
 
     /** 0℃ is just as cold as 0℃. */
