@@ -119,7 +119,7 @@ public class Volume implements Comparable<Volume> {
     }
 
     /**
-     * A units-agnostic hash code for this temperature.
+     * A units-agnostic hash code for this volume.
      *
      * @return a hash code value for this object
      */
