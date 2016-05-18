@@ -1,3 +1,12 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.1.9"
+    }
+}
+
 apply plugin: 'java'
 apply plugin: 'idea'
 
@@ -50,3 +59,10 @@ jacocoTestReport {
     }
 }
 check.dependsOn jacocoTestReport
+
+apply plugin: "info.solidsoft.pitest"
+pitest {
+    targetClasses = ['com.ciderref.*']
+    threads = 4
+    outputFormats = ['XML', 'HTML']
+}
