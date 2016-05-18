@@ -25,9 +25,10 @@
 package com.ciderref.sdk.property;
 
 /**
- * Represents volumic mass. Immutable and thread-safe.
+ * Represents the mass of a constituent substance in a mixture divided by the volume of the mixture. Immutable and
+ * thread-safe.
  */
-public class Density implements Comparable<Density> {
+public class MassConcentration implements Comparable<MassConcentration> {
 
     private static final Volume ZERO_VOLUME = new Volume(0, Volume.Units.Milliliters);
 
@@ -43,53 +44,55 @@ public class Density implements Comparable<Density> {
      * @throws IllegalArgumentException if either {@code mass} or {@code volume} is {@code null} or if the
      *         {@code volume} is zero.
      */
-    public Density(Mass mass, Volume volume) {
+    public MassConcentration(Mass mass, Volume volume) {
         if (mass == null || volume == null) {
-            throw new IllegalArgumentException("Density requires knowledge of both mass and volume.");
+            throw new IllegalArgumentException("MassConcentration requires knowledge of both mass and volume.");
         }
         if (ZERO_VOLUME.equals(volume)) {
-            throw new IllegalArgumentException("Density is undefined when the mass does not occupy any volume.");
+            throw new IllegalArgumentException("MassConcentration is undefined when the mass does not occupy "
+                    + "any volume.");
         }
         this.mass = mass;
         this.volume = volume;
     }
 
     /**
-     * This density expressed in specific units of measurement.
+     * This mass concentration expressed in specific units of measurement.
      *
      * @param massUnits (not null) the mass unit of measurement in which to return this volume; e.g. the unit of
      *                  measurement in the numerator in the unit expression.
      * @param volumeUnits (not null) the volume unit of measurement in which to return this volume; e.g. the
      *                    unit of measurement in the denominator in the unit expression.
-     * @return this density expressed in {@code massUnits} per {@code volumeUnits}.
+     * @return this mass concentration expressed in {@code massUnits} per {@code volumeUnits}.
      *
      * @throws IllegalArgumentException if either {@code massUnits} or {@code volumeUnits} is {@code null}
      */
     public double getValue(Mass.Units massUnits, Volume.Units volumeUnits) {
         if (massUnits == null || volumeUnits == null) {
-            throw new IllegalArgumentException("Density cannot be represented without units of measurement for both "
-                    + "mass and volume.");
+            throw new IllegalArgumentException("MassConcentration cannot be represented without units of measurement "
+                    + "for both mass and volume.");
         }
         return mass.getValue(massUnits) / volume.getValue(volumeUnits);
     }
 
     /**
-     * Compares this density to another density. Note that values that are within 1/100th of a gram per liter of each
-     * other are considered equivalent.
+     * Compares this mass concentration to another mass concentration. Note that values that are within 1/100th of a
+     * gram per liter of each other are considered equivalent.
      *
-     * @param otherDensity the other density
-     * @return {@code true} if this density is higher than {@code otherDensity}; {@code false} otherwise.
+     * @param otherMassConcentration the other mass concentration
+     * @return {@code true} if this mass concentration is higher than {@code otherMassConcentration};
+     *         {@code false} otherwise.
      *
-     * @throws NullPointerException if {@code otherDensity} is null
+     * @throws NullPointerException if {@code otherMassConcentration} is null
      */
     @Override
-    public int compareTo(Density otherDensity) {
-        double thisDensityNormalized = getValue(Mass.Units.Grams, Volume.Units.Liters);
-        double otherDensityNormalized = otherDensity.getValue(Mass.Units.Grams, Volume.Units.Liters);
-        if (Math.abs(thisDensityNormalized - otherDensityNormalized) <= 0.01) {
+    public int compareTo(MassConcentration otherMassConcentration) {
+        double thisMassConcentrationNormalized = getValue(Mass.Units.Grams, Volume.Units.Liters);
+        double otherMassConcentrationNormalized = otherMassConcentration.getValue(Mass.Units.Grams, Volume.Units.Liters);
+        if (Math.abs(thisMassConcentrationNormalized - otherMassConcentrationNormalized) <= 0.01) {
             return 0;
         } else {
-            return Double.compare(thisDensityNormalized, otherDensityNormalized);
+            return Double.compare(thisMassConcentrationNormalized, otherMassConcentrationNormalized);
         }
     }
 
@@ -100,7 +103,7 @@ public class Density implements Comparable<Density> {
      * <ul>
      *     <li>The other object is not {@code null}</li>
      *     <li>The other object is an {@code instanceof} this class</li>
-     *     <li>This object {@link #compareTo(Density)} the other object returns {@code 0} (equivalent)</li>
+     *     <li>This object {@link #compareTo(MassConcentration)} the other object returns {@code 0} (equivalent)</li>
      * </ul>
      *
      * @param other (nullable) the object to compare with this object
@@ -108,11 +111,11 @@ public class Density implements Comparable<Density> {
      */
     @Override
     public final boolean equals(Object other) {
-        return other instanceof Density && (other == this || this.compareTo((Density) other) == 0);
+        return other instanceof MassConcentration && (other == this || this.compareTo((MassConcentration) other) == 0);
     }
 
     /**
-     * A units-agnostic hash code for this density.
+     * A units-agnostic hash code for this mass concentration.
      *
      * @return a hash code value for this object
      */
