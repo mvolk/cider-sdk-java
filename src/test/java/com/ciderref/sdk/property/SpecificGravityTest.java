@@ -79,13 +79,13 @@ public class SpecificGravityTest {
     /** Correcting constructor throws if the measured specific gravity is too low. */
     @Test(expected = IllegalPropertyValueException.class)
     public void testCorrectingConstructorMeasuredValueTooLow() {
-        new SpecificGravity(SpecificGravity.MINIMUM_SUPPORTED_VALUE - 0.01, ROOM_TEMPERATURE, ROOM_TEMPERATURE);
+        new SpecificGravity(SpecificGravity.MINIMUM_SUPPORTED_VALUE - 0.01, ROOM_TEMPERATURE, FREEZING);
     }
 
     /** Correcting constructor throws if the measured specific gravity is too high. */
     @Test(expected = IllegalPropertyValueException.class)
     public void testCorrectingConstructorMeasuredValueTooHigh() {
-        new SpecificGravity(SpecificGravity.MAXIMUM_SUPPORTED_VALUE + 0.01, ROOM_TEMPERATURE, ROOM_TEMPERATURE);
+        new SpecificGravity(SpecificGravity.MAXIMUM_SUPPORTED_VALUE + 0.01, ROOM_TEMPERATURE, BOILING);
     }
 
     /** Correcting constructor throws if the corrected specific gravity is too low. */

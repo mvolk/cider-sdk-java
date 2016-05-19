@@ -137,6 +137,21 @@ public class VolumeTest {
         new Volume(50, Liters).compareTo(null);
     }
 
+    /**
+     * 1.00 mL is the same as 1.009999999999 mL. Note that comparison to 1.01 doesn't work since 1 - 1.01 in
+     * double-precision floating point arithmetic yields a tiny fraction more than 0.01.
+     */
+    @Test
+    public void testCompareValuesSeparatedByLessThanEpsilon() {
+        assertEquals(0, new Volume(1, Milliliters).compareTo(new Volume(1.009999999999, Milliliters)));
+    }
+
+    /** 1.000 mL is less than 1.01000000001 mL. */
+    @Test
+    public void testCompareValuesSeparatedByMoreThanEpsilon() {
+        assertEquals(-1, new Volume(1, Milliliters).compareTo(new Volume(1.01000000001, Milliliters)));
+    }
+
     /** 5L is more than 1 US Gallon. */
     @Test
     public void testCompare5LitersTo1UsGallon() {
