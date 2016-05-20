@@ -82,6 +82,37 @@ public class MassTest {
         new Mass(5, null);
     }
 
+    /** Constructing with NaN produces an exception. */
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructorNaNThrows() {
+        new Mass(Double.NaN, Grams);
+    }
+
+    /** Constructing with value less than zero produces an exception. */
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructorNegativeThrows() {
+        // -0.0 is equivalent to 0.0 according to Double.compare, so go one ulp less to test the boundary
+        new Mass(-0.0 - Math.ulp(-0.0), Grams);
+    }
+
+    /** Constructing with positive zero is valid. */
+    @Test
+    public void testConstructorZeroValid() {
+        assertEquals(0, new Mass(+0, Grams).getValue(Grams), 0);
+    }
+
+    /** Constructing with negative infinity produces an exception. */
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructorNegativeInfinitThrows() {
+        new Mass(Double.NEGATIVE_INFINITY, Grams);
+    }
+
+    /** Constructing with positive infinity produces an exception. */
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructorPositiveInfinitThrows() {
+        new Mass(Double.POSITIVE_INFINITY, Grams);
+    }
+
     /** Constructor handles milligrams correctly. */
     @Test
     public void testConstructorMilligrams() {
@@ -243,6 +274,12 @@ public class MassTest {
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     public void equalsContract() {
         EqualsVerifier.forClass(Mass.class).verify();
+    }
+
+    /** Hash code value is as expected. */
+    @Test
+    public void testHashCode() {
+        assertEquals(new Long(100).hashCode(), new Mass(1, Grams).hashCode());
     }
 
 }

@@ -48,6 +48,16 @@ public class Mass implements Comparable<Mass> {
         if (units == null) {
             throw new IllegalArgumentException("Mass cannot be represented without units of measurement.");
         }
+        if (Double.isNaN(value)) {
+            throw new IllegalArgumentException("The magnitude of a mass must be represented by a number.");
+        }
+        if (Double.compare(value, 0.0) < 0) {
+            throw new IllegalArgumentException("The magnitude of a mass cannot be less than zero.");
+        }
+        if (Double.isInfinite(value)) {
+            throw new IllegalArgumentException("This implementation does not support representation of infinite "
+                    + "mass.");
+        }
         switch (units) {
             case Kilograms:
                 this.grams = value * 1000.0;
@@ -99,11 +109,7 @@ public class Mass implements Comparable<Mass> {
      */
     @Override
     public int compareTo(Mass otherMass) {
-        if (Math.abs(grams - otherMass.grams) <= 0.01) {
-            return 0;
-        } else {
-            return Double.compare(grams, otherMass.grams);
-        }
+        return Long.compare(getComparableValue(), otherMass.getComparableValue());
     }
 
     /**
@@ -131,7 +137,12 @@ public class Mass implements Comparable<Mass> {
      */
     @Override
     public final int hashCode() {
-        return ((Double) grams).hashCode();
+        return ((Long) getComparableValue()).hashCode();
+    }
+
+    // Returns temperature in hundredths of a gram. Used to sidestep floating point comparison issues.
+    private long getComparableValue() {
+        return Math.round(grams * 100);
     }
 
 }
