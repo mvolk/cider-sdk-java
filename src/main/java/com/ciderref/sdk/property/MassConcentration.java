@@ -80,21 +80,15 @@ public class MassConcentration implements Comparable<MassConcentration> {
      * gram per liter of each other are considered equivalent.
      *
      * @param otherMassConcentration the other mass concentration
-     * @return {@code true} if this mass concentration is higher than {@code otherMassConcentration};
-     *         {@code false} otherwise.
+     * @return the value {@code 0} if this mass concentration is the same as {@code otherMassConcentration}; a value
+     *         less than {@code 0} if this massConcentration is lower than {@code otherMassConcentration}; and a value
+     *         greater than {@code 0} if this mass concentration is higher than {@code otherMassConcentration}.
      *
      * @throws NullPointerException if {@code otherMassConcentration} is null
      */
     @Override
     public int compareTo(MassConcentration otherMassConcentration) {
-        double thisMassConcentrationNormalized = getValue(Mass.Units.Grams, Volume.Units.Liters);
-        double otherMassConcentrationNormalized =
-                otherMassConcentration.getValue(Mass.Units.Grams, Volume.Units.Liters);
-        if (Math.abs(thisMassConcentrationNormalized - otherMassConcentrationNormalized) <= 0.01) {
-            return 0;
-        } else {
-            return Double.compare(thisMassConcentrationNormalized, otherMassConcentrationNormalized);
-        }
+        return Long.compare(getComparableValue(), otherMassConcentration.getComparableValue());
     }
 
     /**
@@ -122,7 +116,12 @@ public class MassConcentration implements Comparable<MassConcentration> {
      */
     @Override
     public final int hashCode() {
-        return mass.hashCode() ^ volume.hashCode();
+        return ((Long) getComparableValue()).hashCode();
+    }
+
+    // Returns temperature in hundredths of a gram per liter. Used to sidestep floating point comparison issues.
+    private long getComparableValue() {
+        return  Math.round(getValue(Mass.Units.Grams, Volume.Units.Liters) * 100);
     }
 
 }

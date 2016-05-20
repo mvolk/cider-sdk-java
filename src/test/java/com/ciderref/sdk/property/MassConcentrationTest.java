@@ -139,4 +139,11 @@ public class MassConcentrationTest {
         EqualsVerifier.forClass(MassConcentration.class).suppress(Warning.NULL_FIELDS).verify();
     }
 
+    /** Hash code value is as expected. */
+    @Test
+    public void testHashCode() {
+        assertEquals(new Long(100).hashCode(),
+                new MassConcentration(new Mass(1, Mass.Units.Grams), new Volume(1, Volume.Units.Liters)).hashCode());
+    }
+
 }
