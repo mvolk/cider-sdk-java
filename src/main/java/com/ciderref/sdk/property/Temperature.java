@@ -25,7 +25,8 @@
 package com.ciderref.sdk.property;
 
 /**
- * Represents a temperature. Immutable and thread-safe.
+ * Represents a temperature to the nearest hundredth of a degree Celsius. Calculations (such are unit conversions) are
+ * performed with full available precision. Immutable and thread-safe.
  */
 public class Temperature implements Comparable<Temperature> {
 
@@ -44,7 +45,15 @@ public class Temperature implements Comparable<Temperature> {
     public Temperature(double temperature, Units units) {
         if (units == null) {
             throw new IllegalArgumentException("Temperature cannot be represented without units of measurement.");
-        } else if (units == Units.Celsius) {
+        }
+        if (Double.isNaN(temperature)) {
+            throw new IllegalArgumentException("The magnitude of a temperature must be represented by a number.");
+        }
+        if (Double.isInfinite(temperature)) {
+            throw new IllegalArgumentException("This implementation does not support representation of infinite "
+                    + "temperature.");
+        }
+        if (units == Units.Celsius) {
             this.degreesC = temperature;
         } else {
             this.degreesC = (temperature - 32.0) * 5.0 / 9.0;
@@ -70,7 +79,8 @@ public class Temperature implements Comparable<Temperature> {
     }
 
     /**
-     * Compares one temperature to another in order from coldest to warmest.
+     * Compares one temperature to another in order from coldest to warmest. Note that values are rounded to the
+     * nearest hundredth of a degree Celsius using the "half up" rounding strategy prior to comparison.
      *
      * @param otherTemperature the other temperature
      * @return the value {@code 0} if this temperature is the same as {@code otherTemperature}; a value less than
@@ -81,7 +91,7 @@ public class Temperature implements Comparable<Temperature> {
      */
     @Override
     public int compareTo(Temperature otherTemperature) {
-        return Double.compare(degreesC, otherTemperature.degreesC);
+        return Long.compare(getComparableValue(), otherTemperature.getComparableValue());
     }
 
     /**
@@ -133,7 +143,12 @@ public class Temperature implements Comparable<Temperature> {
      */
     @Override
     public final int hashCode() {
-        return ((Double) degreesC).hashCode();
+        return ((Long) getComparableValue()).hashCode();
+    }
+
+    // Returns temperature in hundredths of a degree Celsius. Used to sidestep floating point comparison issues.
+    private long getComparableValue() {
+        return Math.round(degreesC * 100);
     }
 
 }

@@ -25,7 +25,8 @@
 package com.ciderref.sdk.property;
 
 /**
- * Represents a volume. Immutable and thread-safe.
+ * Represents a volume to the nearest microliter. Calculations (such are unit conversions) are performed with full
+ * available precision. Immutable and thread-safe.
  */
 public class Volume implements Comparable<Volume> {
 
@@ -47,12 +48,22 @@ public class Volume implements Comparable<Volume> {
         if (units == null) {
             throw new IllegalArgumentException("Volume cannot be represented without units of measurement.");
         }
+        if (Double.isNaN(value)) {
+            throw new IllegalArgumentException("The magnitude of a volume must be represented by a number.");
+        }
+        if (Double.compare(value, 0.0) < 0) {
+            throw new IllegalArgumentException("The magnitude of a volume cannot be less than zero.");
+        }
+        if (Double.isInfinite(value)) {
+            throw new IllegalArgumentException("This implementation does not support representation of infinite "
+                    + "volume.");
+        }
         switch (units) {
             case Liters:
                 this.milliliters = value * 1000.0;
                 break;
             case USGallons:
-                this.milliliters = value * 3785.411784;
+                this.milliliters = value * 3785.41178;
                 break;
             default: // Milliliters
                 this.milliliters = value;
@@ -83,8 +94,8 @@ public class Volume implements Comparable<Volume> {
     }
 
     /**
-     * Compares this volume to another volume. Note that values that are within 1/100th of a milliliter of each other
-     * are considered equivalent.
+     * Compares this volume to another volume. Note that values are rounded to the nearest microliter using the
+     * "half up" rounding strategy prior to comparison.
      *
      * @param otherVolume the other volume
      * @return {@code true} if this volume is larger than {@code otherVolume}; {@code false} otherwise.
@@ -93,11 +104,7 @@ public class Volume implements Comparable<Volume> {
      */
     @Override
     public int compareTo(Volume otherVolume) {
-        if (Math.abs(milliliters - otherVolume.milliliters) <= 0.01) {
-            return 0;
-        } else {
-            return Double.compare(milliliters, otherVolume.milliliters);
-        }
+        return Long.compare(getComparableValue(), otherVolume.getComparableValue());
     }
 
     /**
@@ -125,7 +132,12 @@ public class Volume implements Comparable<Volume> {
      */
     @Override
     public final int hashCode() {
-        return ((Double) milliliters).hashCode();
+        return ((Long) getComparableValue()).hashCode();
+    }
+
+    // Returns volume in microliters. Used to sidestep floating point comparison issues.
+    private long getComparableValue() {
+        return Math.round(milliliters * 1000);
     }
 
 }

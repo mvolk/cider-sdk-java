@@ -63,6 +63,30 @@ public class TemperatureTest {
         new Temperature(212, null);
     }
 
+    /** Constructing with NaN produces an exception. */
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructorNaNThrows() {
+        new Temperature(Double.NaN, Celsius);
+    }
+
+    /** Constructing with value less than zero is valid. */
+    @Test
+    public void testConstructorNegative() {
+        assertEquals(-400, new Temperature(-400, Celsius).getValue(Celsius), 0);
+    }
+
+    /** Constructing with negative infinity produces an exception. */
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructorNegativeInfinitThrows() {
+        new Temperature(Double.NEGATIVE_INFINITY, Celsius);
+    }
+
+    /** Constructing with positive infinity produces an exception. */
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructorPositiveInfinitThrows() {
+        new Temperature(Double.POSITIVE_INFINITY, Celsius);
+    }
+
     /** 0℃ should be 0℃ ±0. */
     @Test
     public void test0CelsiusIs0Celsius() {
@@ -436,6 +460,12 @@ public class TemperatureTest {
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     public void equalsContract() {
         EqualsVerifier.forClass(Temperature.class).verify();
+    }
+
+    /** Hash code value is as expected. */
+    @Test
+    public void testHashCode() {
+        assertEquals(new Long(100).hashCode(), new Temperature(1, Celsius).hashCode());
     }
 
 }

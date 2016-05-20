@@ -70,6 +70,37 @@ public class VolumeTest {
         new Volume(5, null);
     }
 
+    /** Constructing with NaN produces an exception. */
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructorNaNThrows() {
+        new Volume(Double.NaN, Milliliters);
+    }
+
+    /** Constructing with value less than zero produces an exception. */
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructorNegativeThrows() {
+        // -0.0 is equivalent to 0.0 according to Double.compare, so go one ulp less to test the boundary
+        new Volume(-0.0 - Math.ulp(-0.0), Milliliters);
+    }
+
+    /** Constructing with positive zero is valid. */
+    @Test
+    public void testConstructorZeroValid() {
+        assertEquals(0, new Volume(+0, Milliliters).getValue(Milliliters), 0);
+    }
+
+    /** Constructing with negative infinity produces an exception. */
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructorNegativeInfinitThrows() {
+        new Volume(Double.NEGATIVE_INFINITY, Milliliters);
+    }
+
+    /** Constructing with positive infinity produces an exception. */
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructorPositiveInfinitThrows() {
+        new Volume(Double.POSITIVE_INFINITY, Milliliters);
+    }
+
     /** Constructor handles milliliters correctly. */
     @Test
     public void testConstructorMilliliters() {
@@ -85,7 +116,7 @@ public class VolumeTest {
     /** Constructor handles US Gallons correctly. */
     @Test
     public void testConstructorUsGallons() {
-        assertEquals(5, new Volume(5, USGallons).getValue(USGallons), 0);
+        assertEquals(5, new Volume(5, USGallons).getValue(USGallons), 0.000001);
     }
 
     /** getValue throws if null units passed in. */
@@ -137,19 +168,27 @@ public class VolumeTest {
         new Volume(50, Liters).compareTo(null);
     }
 
+    // TODO choose the double value closest to 1.005 without being 1.005 or over
     /**
-     * 1.00 mL is the same as 1.009999999999 mL. Note that comparison to 1.01 doesn't work since 1 - 1.01 in
-     * double-precision floating point arithmetic yields a tiny fraction more than 0.01.
+     * 1.000 mL is the same as 1.000499999999998 mL.
      */
     @Test
-    public void testCompareValuesSeparatedByLessThanEpsilon() {
-        assertEquals(0, new Volume(1, Milliliters).compareTo(new Volume(1.009999999999, Milliliters)));
+    public void testCompareValuesSeparatedByLessThanEpsilonOver() {
+        assertEquals(0, new Volume(1, Milliliters).compareTo(new Volume(1.000499999999998, Milliliters)));
+    }
+
+    /**
+     * 1.000 mL is the same as 0.9995 mL.
+     */
+    @Test
+    public void testCompareValuesSeparatedByLessThanEpsilonUnder() {
+        assertEquals(0, new Volume(1, Milliliters).compareTo(new Volume(0.9995, Milliliters)));
     }
 
     /** 1.000 mL is less than 1.01000000001 mL. */
     @Test
     public void testCompareValuesSeparatedByMoreThanEpsilon() {
-        assertEquals(-1, new Volume(1, Milliliters).compareTo(new Volume(1.01000000001, Milliliters)));
+        assertEquals(-1, new Volume(1, Milliliters).compareTo(new Volume(1.001000000001, Milliliters)));
     }
 
     /** 5L is more than 1 US Gallon. */
@@ -222,6 +261,12 @@ public class VolumeTest {
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     public void equalsContract() {
         EqualsVerifier.forClass(Volume.class).verify();
+    }
+
+    /** Hash code value is as expected. */
+    @Test
+    public void testHashCode() {
+        assertEquals(new Long(1000).hashCode(), new Volume(1, Milliliters).hashCode());
     }
 
 }
