@@ -88,7 +88,8 @@ public class MassConcentration implements Comparable<MassConcentration> {
     @Override
     public int compareTo(MassConcentration otherMassConcentration) {
         double thisMassConcentrationNormalized = getValue(Mass.Units.Grams, Volume.Units.Liters);
-        double otherMassConcentrationNormalized = otherMassConcentration.getValue(Mass.Units.Grams, Volume.Units.Liters);
+        double otherMassConcentrationNormalized =
+                otherMassConcentration.getValue(Mass.Units.Grams, Volume.Units.Liters);
         if (Math.abs(thisMassConcentrationNormalized - otherMassConcentrationNormalized) <= 0.01) {
             return 0;
         } else {
