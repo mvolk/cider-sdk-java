@@ -24,29 +24,36 @@
 
 package com.ciderref.sdk.property.units;
 
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.Test;
+
 /**
- * Provides units conversion functions and a point of injections for mocks to assist in unit testing.
+ * Unit tests for {@link MassConversionFunctions}.
  */
-public final class ConversionFunctions {
+public class MassConversionFunctionsTest {
 
-    private ConversionFunctions() { }
-
-    /**
-     * Provides a collection of units of mass conversion functions.
-     *
-     * @return (not null) a collection of units of mass conversion functions
-     */
-    public static MassConversionFunctions getForUnitsOfMass() {
-        return new MassConversionFunctions();
+    /** Conversion from null units produces exception. */
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetFunctionWithNullFromUnitsThrows() {
+        new MassConversionFunctions().getFunction(null, UnitsOfMass.Grams);
     }
 
-    /**
-     * Provides a collection of functions for converting temperature expressed in one unit of measurement to another.
-     *
-     * @return (not null) a collection of units of temperature conversion functions
-     */
-    public static TemperatureConversionFunctions getForUnitsOfTemperature() {
-        return new TemperatureConversionFunctions();
+    /** Conversion to null units produces exception. */
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetFunctionWithNullToUnitsThrows() {
+        new MassConversionFunctions().getFunction(UnitsOfMass.Grams, null);
+    }
+
+    /** Functions are provided for all possible permutations of from and to units. */
+    @Test
+    public void testGetFunctionAllPermutations() {
+        MassConversionFunctions library = new MassConversionFunctions();
+        for (UnitsOfMass fromUnits : UnitsOfMass.values()) {
+            for (UnitsOfMass toUnits : UnitsOfMass.values()) {
+                assertNotNull(library.getFunction(fromUnits, toUnits));
+            }
+        }
     }
 
 }

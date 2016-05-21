@@ -24,36 +24,33 @@
 
 package com.ciderref.sdk.property.units;
 
-import static org.junit.Assert.assertNotNull;
-
+import com.ciderref.sdk.math.IdentityFunction;
 import org.junit.Test;
 
 /**
- * Unit tests for {@link UnitsOfMassConversionFunctions}.
+ * Unit tests for {@link TableOfConversionFunctions}.
  */
-public class UnitsOfMassConversionFunctionsTest {
+public class TableOfConversionFunctionsTest {
 
-    /** Conversion from null units produces exception. */
+    /** put(...) should throw if fromUnits is null. */
     @Test(expected = IllegalArgumentException.class)
-    public void testGetFunctionWithNullFromUnitsThrows() {
-        new UnitsOfMassConversionFunctions().getFunction(null, UnitsOfMass.Grams);
+    public void testPutNullFromUnitsThrows() {
+        new TableOfConversionFunctions<>(UnitsOfMass.values())
+                .put(null, UnitsOfMass.Grams, new IdentityFunction());
     }
 
-    /** Conversion to null units produces exception. */
+    /** put(...) should throw if toUnits is null. */
     @Test(expected = IllegalArgumentException.class)
-    public void testGetFunctionWithNullToUnitsThrows() {
-        new UnitsOfMassConversionFunctions().getFunction(UnitsOfMass.Grams, null);
+    public void testPutNullToUnitsThrows() {
+        new TableOfConversionFunctions<>(UnitsOfMass.values())
+                .put(UnitsOfMass.Grams, null, new IdentityFunction());
     }
 
-    /** Functions are provided for all possible permutations of from and to units. */
-    @Test
-    public void testGetFunctionAllPermutations() {
-        UnitsOfMassConversionFunctions library = new UnitsOfMassConversionFunctions();
-        for (UnitsOfMass fromUnits : UnitsOfMass.values()) {
-            for (UnitsOfMass toUnits : UnitsOfMass.values()) {
-                assertNotNull(library.getFunction(fromUnits, toUnits));
-            }
-        }
+    /** put(...) should throw if fromUnits and toUnits are null. */
+    @Test(expected = IllegalArgumentException.class)
+    public void testPutNullFromAndToUnitsThrows() {
+        new TableOfConversionFunctions<>(UnitsOfMass.values())
+                .put(null, null, new IdentityFunction());
     }
 
 }

@@ -24,13 +24,14 @@
 
 package com.ciderref.sdk.property;
 
-import static com.ciderref.sdk.property.Temperature.Units.Celsius;
-import static com.ciderref.sdk.property.Temperature.Units.Fahrenheit;
+import static com.ciderref.sdk.property.units.UnitsOfTemperature.Celsius;
+import static com.ciderref.sdk.property.units.UnitsOfTemperature.Fahrenheit;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 
 /**
@@ -38,24 +39,6 @@ import org.junit.Test;
  */
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.ExcessivePublicCount", "PMD.GodClass"})
 public class TemperatureTest {
-
-    /** Temperature.Units.values() should return 2 enums */
-    @Test
-    public void testTwoValues() {
-        assertEquals(2, Temperature.Units.values().length);
-    }
-
-    /** Temperature.Units.valueOf("Celsius") should return Celsius */
-    @Test
-    public void testValueOfCelsius() {
-        assertEquals(Celsius, Temperature.Units.valueOf("Celsius"));
-    }
-
-    /** Temperature.Units.valueOf("Fahrenheit") should return Fahrenheit */
-    @Test
-    public void testValueOfFahrenheit() {
-        assertEquals(Fahrenheit, Temperature.Units.valueOf("Fahrenheit"));
-    }
 
     /** Constructing with null units of measurement produces an exception. */
     @Test(expected = IllegalArgumentException.class)
@@ -459,7 +442,11 @@ public class TemperatureTest {
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     public void equalsContract() {
-        EqualsVerifier.forClass(Temperature.class).verify();
+        EqualsVerifier
+                .forClass(Temperature.class)
+                .withIgnoredFields("magnitude", "units", "conversion")
+                .suppress(Warning.NULL_FIELDS) // comparableValue should never be null
+                .verify();
     }
 
     /** Hash code value is as expected. */

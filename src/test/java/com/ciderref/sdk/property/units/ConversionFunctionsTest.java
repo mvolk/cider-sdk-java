@@ -66,4 +66,10 @@ public class ConversionFunctionsTest {
         assertNotNull(ConversionFunctions.getForUnitsOfMass());
     }
 
+    /** getForUnitsOfTemperature returns a non-null value. */
+    @Test
+    public void testGetForUnitsOfTemperature() {
+        assertNotNull(ConversionFunctions.getForUnitsOfTemperature());
+    }
+
 }

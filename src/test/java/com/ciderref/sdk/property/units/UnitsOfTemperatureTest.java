@@ -24,29 +24,33 @@
 
 package com.ciderref.sdk.property.units;
 
+import static com.ciderref.sdk.property.units.UnitsOfTemperature.Celsius;
+import static com.ciderref.sdk.property.units.UnitsOfTemperature.Fahrenheit;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
 /**
- * Provides units conversion functions and a point of injections for mocks to assist in unit testing.
+ * Unit tests for {@link UnitsOfTemperature}.
  */
-public final class ConversionFunctions {
+public class UnitsOfTemperatureTest {
 
-    private ConversionFunctions() { }
-
-    /**
-     * Provides a collection of units of mass conversion functions.
-     *
-     * @return (not null) a collection of units of mass conversion functions
-     */
-    public static MassConversionFunctions getForUnitsOfMass() {
-        return new MassConversionFunctions();
+    /** Temperature.Units.values() should return 2 enums */
+    @Test
+    public void testTwoValues() {
+        assertEquals(2, UnitsOfTemperature.values().length);
     }
 
-    /**
-     * Provides a collection of functions for converting temperature expressed in one unit of measurement to another.
-     *
-     * @return (not null) a collection of units of temperature conversion functions
-     */
-    public static TemperatureConversionFunctions getForUnitsOfTemperature() {
-        return new TemperatureConversionFunctions();
+    /** Temperature.Units.valueOf("Celsius") should return Celsius */
+    @Test
+    public void testValueOfCelsius() {
+        assertEquals(Celsius, UnitsOfTemperature.valueOf("Celsius"));
+    }
+
+    /** Temperature.Units.valueOf("Fahrenheit") should return Fahrenheit */
+    @Test
+    public void testValueOfFahrenheit() {
+        assertEquals(Fahrenheit, UnitsOfTemperature.valueOf("Fahrenheit"));
     }
 
 }

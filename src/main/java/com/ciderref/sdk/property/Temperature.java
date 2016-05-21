@@ -24,15 +24,20 @@
 
 package com.ciderref.sdk.property;
 
+import com.ciderref.sdk.property.units.ConversionFunctions;
+import com.ciderref.sdk.property.units.TemperatureConversionFunctions;
+import com.ciderref.sdk.property.units.UnitsOfTemperature;
+
 /**
  * Represents a temperature to the nearest hundredth of a degree Celsius. Calculations (such are unit conversions) are
  * performed with full available precision. Immutable and thread-safe.
  */
 public class Temperature implements Comparable<Temperature> {
 
-    public enum Units { Celsius, Fahrenheit }
-
-    private final double degreesC;
+    private final double magnitude;
+    private final UnitsOfTemperature units;
+    private final Long comparableValue;
+    private final TemperatureConversionFunctions conversion;
 
     /**
      * Constructor.
@@ -42,7 +47,7 @@ public class Temperature implements Comparable<Temperature> {
      *
      * @throws NullPointerException if {@code units} is null
      */
-    public Temperature(double temperature, Units units) {
+    public Temperature(double temperature, UnitsOfTemperature units) {
         if (units == null) {
             throw new IllegalArgumentException("Temperature cannot be represented without units of measurement.");
         }
@@ -53,11 +58,10 @@ public class Temperature implements Comparable<Temperature> {
             throw new IllegalArgumentException("This implementation does not support representation of infinite "
                     + "temperature.");
         }
-        if (units == Units.Celsius) {
-            this.degreesC = temperature;
-        } else {
-            this.degreesC = (temperature - 32.0) * 5.0 / 9.0;
-        }
+        this.magnitude = temperature;
+        this.units = units;
+        this.conversion = ConversionFunctions.getForUnitsOfTemperature();
+        this.comparableValue = Math.round(getValue(UnitsOfTemperature.Celsius) * 100);
     }
 
     /**
@@ -68,14 +72,11 @@ public class Temperature implements Comparable<Temperature> {
      *
      * @throws IllegalArgumentException if {@code units} is null
      */
-    public double getValue(Units units) {
+    public final double getValue(UnitsOfTemperature units) {
         if (units == null) {
             throw new IllegalArgumentException("Temperature cannot be represented without units of measurement.");
-        } else if (units == Units.Celsius) {
-            return degreesC;
-        } else {
-            return degreesC * 9.0 / 5.0 + 32.0;
         }
+        return conversion.getFunction(this.units, units).applyTo(magnitude);
     }
 
     /**
@@ -91,7 +92,7 @@ public class Temperature implements Comparable<Temperature> {
      */
     @Override
     public int compareTo(Temperature otherTemperature) {
-        return Long.compare(getComparableValue(), otherTemperature.getComparableValue());
+        return comparableValue.compareTo(otherTemperature.comparableValue);
     }
 
     /**
@@ -143,12 +144,7 @@ public class Temperature implements Comparable<Temperature> {
      */
     @Override
     public final int hashCode() {
-        return ((Long) getComparableValue()).hashCode();
-    }
-
-    // Returns temperature in hundredths of a degree Celsius. Used to sidestep floating point comparison issues.
-    private long getComparableValue() {
-        return Math.round(degreesC * 100);
+        return comparableValue.hashCode();
     }
 
 }

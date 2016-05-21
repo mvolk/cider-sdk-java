@@ -24,29 +24,31 @@
 
 package com.ciderref.sdk.property.units;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+
+import com.ciderref.sdk.math.Function;
+import org.junit.Test;
+
 /**
- * Provides units conversion functions and a point of injections for mocks to assist in unit testing.
+ * Unit tests for {@link CelsiusToFahrenheitFunction}.
  */
-public final class ConversionFunctions {
+public class CelsiusToFahrenheitFunctionTest {
 
-    private ConversionFunctions() { }
-
-    /**
-     * Provides a collection of units of mass conversion functions.
-     *
-     * @return (not null) a collection of units of mass conversion functions
-     */
-    public static MassConversionFunctions getForUnitsOfMass() {
-        return new MassConversionFunctions();
+    /** getInverse() should be the inverse function with tolerance for floating-pound rounding errors. */
+    @Test
+    public void testInverse() {
+        double degreesC = 18.25;
+        Function function = new CelsiusToFahrenheitFunction();
+        Function inverse = function.getInverse();
+        assertEquals(degreesC, inverse.applyTo(function.applyTo(degreesC)), Math.ulp(degreesC));
     }
 
-    /**
-     * Provides a collection of functions for converting temperature expressed in one unit of measurement to another.
-     *
-     * @return (not null) a collection of units of temperature conversion functions
-     */
-    public static TemperatureConversionFunctions getForUnitsOfTemperature() {
-        return new TemperatureConversionFunctions();
+    /** f.getInverse().getInverse() should return f. */
+    @Test
+    public void testInverseOfInverse() {
+        Function function = new CelsiusToFahrenheitFunction();
+        assertSame(function, function.getInverse().getInverse());
     }
 
 }

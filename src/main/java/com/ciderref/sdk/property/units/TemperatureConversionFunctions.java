@@ -24,29 +24,26 @@
 
 package com.ciderref.sdk.property.units;
 
+import com.ciderref.sdk.math.Function;
+import com.ciderref.sdk.math.IdentityFunction;
+
 /**
- * Provides units conversion functions and a point of injections for mocks to assist in unit testing.
+ * Converts measurements in one unit of temperature to another unit of temperature.
  */
-public final class ConversionFunctions {
+public class TemperatureConversionFunctions extends TableOfConversionFunctions<UnitsOfTemperature> {
 
-    private ConversionFunctions() { }
+    protected static final Function IDENTITY_FUNCTION = new IdentityFunction();
+    protected static final Function CELSIUS_TO_FAHRENHEIT = new CelsiusToFahrenheitFunction();
 
-    /**
-     * Provides a collection of units of mass conversion functions.
-     *
-     * @return (not null) a collection of units of mass conversion functions
-     */
-    public static MassConversionFunctions getForUnitsOfMass() {
-        return new MassConversionFunctions();
-    }
+    /** Constructor. */
+    public TemperatureConversionFunctions() {
+        super(UnitsOfTemperature.values());
 
-    /**
-     * Provides a collection of functions for converting temperature expressed in one unit of measurement to another.
-     *
-     * @return (not null) a collection of units of temperature conversion functions
-     */
-    public static TemperatureConversionFunctions getForUnitsOfTemperature() {
-        return new TemperatureConversionFunctions();
+        put(UnitsOfTemperature.Celsius, UnitsOfTemperature.Celsius, IDENTITY_FUNCTION);
+        put(UnitsOfTemperature.Celsius, UnitsOfTemperature.Fahrenheit, CELSIUS_TO_FAHRENHEIT);
+
+        put(UnitsOfTemperature.Fahrenheit, UnitsOfTemperature.Celsius, CELSIUS_TO_FAHRENHEIT.getInverse());
+        put(UnitsOfTemperature.Fahrenheit, UnitsOfTemperature.Fahrenheit, IDENTITY_FUNCTION);
     }
 
 }

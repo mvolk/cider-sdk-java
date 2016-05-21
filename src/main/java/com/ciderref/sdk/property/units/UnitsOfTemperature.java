@@ -25,28 +25,8 @@
 package com.ciderref.sdk.property.units;
 
 /**
- * Provides units conversion functions and a point of injections for mocks to assist in unit testing.
+ * Units of measurement in which temperature is expressed.
  */
-public final class ConversionFunctions {
-
-    private ConversionFunctions() { }
-
-    /**
-     * Provides a collection of units of mass conversion functions.
-     *
-     * @return (not null) a collection of units of mass conversion functions
-     */
-    public static MassConversionFunctions getForUnitsOfMass() {
-        return new MassConversionFunctions();
-    }
-
-    /**
-     * Provides a collection of functions for converting temperature expressed in one unit of measurement to another.
-     *
-     * @return (not null) a collection of units of temperature conversion functions
-     */
-    public static TemperatureConversionFunctions getForUnitsOfTemperature() {
-        return new TemperatureConversionFunctions();
-    }
-
+public enum UnitsOfTemperature {
+    Celsius, Fahrenheit
 }

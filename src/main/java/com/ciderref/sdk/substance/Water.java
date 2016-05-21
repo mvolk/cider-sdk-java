@@ -26,6 +26,7 @@ package com.ciderref.sdk.substance;
 
 import com.ciderref.sdk.property.IllegalPropertyValueException;
 import com.ciderref.sdk.property.Temperature;
+import com.ciderref.sdk.property.units.UnitsOfTemperature;
 
 import java.text.DecimalFormat;
 
@@ -35,10 +36,10 @@ import java.text.DecimalFormat;
 public class Water {
 
     /** The freezing point of pure water under standard pressure. */
-    public static final Temperature STANDARD_FREEZING_POINT = new Temperature(0, Temperature.Units.Celsius);
+    public static final Temperature STANDARD_FREEZING_POINT = new Temperature(0, UnitsOfTemperature.Celsius);
 
     /** The boiling point of pure water under standard pressure. */
-    public static final Temperature STANDARD_BOILING_POINT = new Temperature(100, Temperature.Units.Celsius);
+    public static final Temperature STANDARD_BOILING_POINT = new Temperature(100, UnitsOfTemperature.Celsius);
 
     /**
      * The density of pure water at a given temperature. Accurate to within 0.1 g/L between 0℃ and 100℃. Accurate
@@ -59,9 +60,9 @@ public class Water {
         if (temperature.isCoolerThan(STANDARD_FREEZING_POINT) || temperature.isWarmerThan(STANDARD_BOILING_POINT)) {
             throw new IllegalPropertyValueException("The CiderRef SDK can only calculate the density of pure water "
                     + "at standard pressure in its liquid state. Pure water at standard pressure is not a liquid at "
-                    + new DecimalFormat("#0.0## ℃").format(temperature.getValue(Temperature.Units.Celsius)) + ".");
+                    + new DecimalFormat("#0.0## ℃").format(temperature.getValue(UnitsOfTemperature.Celsius)) + ".");
         }
-        double degreesC = temperature.getValue(Temperature.Units.Celsius);
+        double degreesC = temperature.getValue(UnitsOfTemperature.Celsius);
         // The following regression was developed using MS Excel and datapoints cross-verified in multiple sources.
         // Solid from 0℃ to 50℃, but accuracy degrades a little above 50℃.
         // Higher-order polynomials performed only marginally better.

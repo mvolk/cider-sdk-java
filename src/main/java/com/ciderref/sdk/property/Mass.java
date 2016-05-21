@@ -25,8 +25,8 @@
 package com.ciderref.sdk.property;
 
 import com.ciderref.sdk.property.units.ConversionFunctions;
+import com.ciderref.sdk.property.units.MassConversionFunctions;
 import com.ciderref.sdk.property.units.UnitsOfMass;
-import com.ciderref.sdk.property.units.UnitsOfMassConversionFunctions;
 
 /**
  * Represents a mass. Conversion factors from http://www.nist.gov/pml/wmd/pubs/upload/AppC-12-hb44-final.pdf.
@@ -38,7 +38,7 @@ public class Mass implements Comparable<Mass> {
     private final double magnitude;
     private final UnitsOfMass units;
     private final Long comparableMass;
-    private final UnitsOfMassConversionFunctions conversion;
+    private final MassConversionFunctions conversion;
 
     /**
      * Constructor.
@@ -76,7 +76,6 @@ public class Mass implements Comparable<Mass> {
      * @return this mass expressed in the given unit of measurement
      *
      * @throws IllegalArgumentException if {@code units} is null
-     * @throws com.ciderref.sdk.property.units.UnsupportedConversionException if unable to convert to the given units.
      */
     public double getValue(UnitsOfMass units) {
         if (units == null) {
