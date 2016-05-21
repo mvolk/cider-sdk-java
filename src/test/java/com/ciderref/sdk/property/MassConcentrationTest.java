@@ -28,6 +28,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import com.ciderref.sdk.property.units.UnitsOfMass;
+import com.ciderref.sdk.property.units.UnitsOfVolume;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
@@ -41,7 +42,7 @@ public class MassConcentrationTest {
     /** Constructing with null mass produces an exception. */
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorNullMassThrows() {
-        new MassConcentration(null, new Volume(1, Volume.Units.USGallons));
+        new MassConcentration(null, new Volume(1, UnitsOfVolume.USGallons));
     }
 
     /** Constructing with null volume produces an exception. */
@@ -59,42 +60,42 @@ public class MassConcentrationTest {
     /** Constructing with zero volume produces an exception. */
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorZeroVolumeThrows() {
-        new MassConcentration(new Mass(4, UnitsOfMass.Grams), new Volume(0, Volume.Units.USGallons));
+        new MassConcentration(new Mass(4, UnitsOfMass.Grams), new Volume(0, UnitsOfVolume.USGallons));
     }
 
     /** Constructor handles args correctly. */
     @Test
     public void testConstructor() {
         assertEquals(2, new MassConcentration(new Mass(4, UnitsOfMass.Grams),
-                new Volume(2, Volume.Units.Liters)).getValue(UnitsOfMass.Grams, Volume.Units.Liters), 0);
+                new Volume(2, UnitsOfVolume.Liters)).getValue(UnitsOfMass.Grams, UnitsOfVolume.Liters), 0);
     }
 
     /** getValue with null mass units throws. */
     @Test(expected = IllegalArgumentException.class)
     public void testGetValueNullMassUnitsThrows() {
         new MassConcentration(new Mass(4, UnitsOfMass.Grams),
-                new Volume(2, Volume.Units.Liters)).getValue(null, Volume.Units.Liters);
+                new Volume(2, UnitsOfVolume.Liters)).getValue(null, UnitsOfVolume.Liters);
     }
 
     /** getValue with null volume units throws. */
     @Test(expected = IllegalArgumentException.class)
     public void testGetValueNullVolumeUnitsThrows() {
         new MassConcentration(new Mass(4, UnitsOfMass.Grams),
-                new Volume(2, Volume.Units.Liters)).getValue(UnitsOfMass.Grams, null);
+                new Volume(2, UnitsOfVolume.Liters)).getValue(UnitsOfMass.Grams, null);
     }
 
     /** getValue with both args null throws. */
     @Test(expected = IllegalArgumentException.class)
     public void testGetValueBothArgsNullThrows() {
         new MassConcentration(new Mass(4, UnitsOfMass.Grams),
-                new Volume(2, Volume.Units.Liters)).getValue(null, null);
+                new Volume(2, UnitsOfVolume.Liters)).getValue(null, null);
     }
 
     /** Comparison to null yields a NPE. */
     @Test(expected = NullPointerException.class)
     public void testCompareToNullThrows() {
         //noinspection ConstantConditions
-        new MassConcentration(new Mass(4, UnitsOfMass.Grams), new Volume(100, Volume.Units.Milliliters))
+        new MassConcentration(new Mass(4, UnitsOfMass.Grams), new Volume(100, UnitsOfVolume.Milliliters))
                 .compareTo(null);
     }
 
@@ -102,31 +103,32 @@ public class MassConcentrationTest {
     @Test
     public void testCompare5GramsPerLiterTo1OuncePerUsGallon() {
         assertEquals(-1,
-                new MassConcentration(new Mass(5, UnitsOfMass.Grams), new Volume(1, Volume.Units.Liters)).compareTo(
-                new MassConcentration(new Mass(1, UnitsOfMass.Ounces), new Volume(1, Volume.Units.USGallons))));
+                new MassConcentration(new Mass(5, UnitsOfMass.Grams), new Volume(1, UnitsOfVolume.Liters)).compareTo(
+                new MassConcentration(new Mass(1, UnitsOfMass.Ounces), new Volume(1, UnitsOfVolume.USGallons))));
     }
 
     /** 1 oz/us gallon is more than 5g/L. */
     @Test
     public void testCompare1OuncePerUsGallonTo5GramsPerLiter() {
         assertEquals(1,
-                new MassConcentration(new Mass(1, UnitsOfMass.Ounces), new Volume(1, Volume.Units.USGallons)).compareTo(
-                new MassConcentration(new Mass(5, UnitsOfMass.Grams), new Volume(1, Volume.Units.Liters))));
+                new MassConcentration(new Mass(1, UnitsOfMass.Ounces), new Volume(1, UnitsOfVolume.USGallons))
+                        .compareTo(
+                new MassConcentration(new Mass(5, UnitsOfMass.Grams), new Volume(1, UnitsOfVolume.Liters))));
     }
 
     /** 5g/L is equal to 5g/L. */
     @Test
     public void testCompare1EquivalentMassConcentrations() {
         assertEquals(0,
-                new MassConcentration(new Mass(5, UnitsOfMass.Grams), new Volume(1, Volume.Units.Liters)).compareTo(
-                new MassConcentration(new Mass(5, UnitsOfMass.Grams), new Volume(1, Volume.Units.Liters))));
+                new MassConcentration(new Mass(5, UnitsOfMass.Grams), new Volume(1, UnitsOfVolume.Liters)).compareTo(
+                new MassConcentration(new Mass(5, UnitsOfMass.Grams), new Volume(1, UnitsOfVolume.Liters))));
     }
 
     /** MassConcentration equals itself. */
     @Test
     public void testMassConcentrationEqualsItself() {
         MassConcentration massConcentration =
-                new MassConcentration(new Mass(5, UnitsOfMass.Grams), new Volume(100, Volume.Units.Milliliters));
+                new MassConcentration(new Mass(5, UnitsOfMass.Grams), new Volume(100, UnitsOfVolume.Milliliters));
         @SuppressWarnings("UnnecessaryLocalVariable")
         MassConcentration itself = massConcentration;
         assertTrue(massConcentration.equals(itself)); // NOPMD - exercising .equals(Object) is the point of this test
@@ -149,7 +151,7 @@ public class MassConcentrationTest {
     @Test
     public void testHashCode() {
         assertEquals(new Long(100).hashCode(),
-                new MassConcentration(new Mass(1, UnitsOfMass.Grams), new Volume(1, Volume.Units.Liters)).hashCode());
+                new MassConcentration(new Mass(1, UnitsOfMass.Grams), new Volume(1, UnitsOfVolume.Liters)).hashCode());
     }
 
 }

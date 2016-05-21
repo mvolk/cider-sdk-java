@@ -24,15 +24,13 @@
 
 package com.ciderref.sdk.property;
 
+import com.ciderref.sdk.property.units.UnitsOfVolume;
+
 /**
  * Represents a volume to the nearest microliter. Calculations (such are unit conversions) are performed with full
  * available precision. Immutable and thread-safe.
  */
 public class Volume implements Comparable<Volume> {
-
-    public enum Units {
-        Milliliters, Liters, USGallons
-    }
 
     private final double milliliters;
 
@@ -44,7 +42,7 @@ public class Volume implements Comparable<Volume> {
      *
      * @throws IllegalArgumentException if {@code units} is {@code null}
      */
-    public Volume(double value, Units units) {
+    public Volume(double value, UnitsOfVolume units) {
         if (units == null) {
             throw new IllegalArgumentException("Volume cannot be represented without units of measurement.");
         }
@@ -79,7 +77,7 @@ public class Volume implements Comparable<Volume> {
      *
      * @throws IllegalArgumentException if {@code units} is null
      */
-    public double getValue(Units units) {
+    public double getValue(UnitsOfVolume units) {
         if (units == null) {
             throw new IllegalArgumentException("Volume cannot be represented without units of measurement.");
         }

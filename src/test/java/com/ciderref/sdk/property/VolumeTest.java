@@ -24,9 +24,9 @@
 
 package com.ciderref.sdk.property;
 
-import static com.ciderref.sdk.property.Volume.Units.Liters;
-import static com.ciderref.sdk.property.Volume.Units.Milliliters;
-import static com.ciderref.sdk.property.Volume.Units.USGallons;
+import static com.ciderref.sdk.property.units.UnitsOfVolume.Liters;
+import static com.ciderref.sdk.property.units.UnitsOfVolume.Milliliters;
+import static com.ciderref.sdk.property.units.UnitsOfVolume.USGallons;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -39,30 +39,6 @@ import org.junit.Test;
  */
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.ExcessivePublicCount", "PMD.TooManyStaticImports"})
 public class VolumeTest {
-
-    /** Volume.Units.values() should return 3 values. */
-    @Test
-    public void testCountOfUnitValues() {
-        assertEquals(3, Volume.Units.values().length);
-    }
-
-    /** Volume.Units.valueOf("Milliliters") should return Milliliters. */
-    @Test
-    public void testUnitsIncludeMilliliters() {
-        assertEquals(Milliliters, Volume.Units.valueOf("Milliliters"));
-    }
-
-    /** Volume.Units.valueOf("Liters") should return Liters. */
-    @Test
-    public void testUnitsIncludeLiters() {
-        assertEquals(Liters, Volume.Units.valueOf("Liters"));
-    }
-
-    /** Volume.Units.valueOf("USGallons") should return USGallons. */
-    @Test
-    public void testUnitsIncludeUsGallons() {
-        assertEquals(USGallons, Volume.Units.valueOf("USGallons"));
-    }
 
     /** Constructing with null units of measurement produces an exception. */
     @Test(expected = IllegalArgumentException.class)

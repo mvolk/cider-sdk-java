@@ -25,6 +25,7 @@
 package com.ciderref.sdk.property;
 
 import com.ciderref.sdk.property.units.UnitsOfMass;
+import com.ciderref.sdk.property.units.UnitsOfVolume;
 
 /**
  * Represents the mass of a constituent substance in a mixture divided by the volume of the mixture. Immutable and
@@ -32,7 +33,7 @@ import com.ciderref.sdk.property.units.UnitsOfMass;
  */
 public class MassConcentration implements Comparable<MassConcentration> {
 
-    private static final Volume ZERO_VOLUME = new Volume(0, Volume.Units.Milliliters);
+    private static final Volume ZERO_VOLUME = new Volume(0, UnitsOfVolume.Milliliters);
 
     private final Mass mass;
     private final Volume volume;
@@ -57,7 +58,7 @@ public class MassConcentration implements Comparable<MassConcentration> {
         }
         this.mass = mass;
         this.volume = volume;
-        this.comparableValue = Math.round(getValue(UnitsOfMass.Grams, Volume.Units.Liters) * 100);
+        this.comparableValue = Math.round(getValue(UnitsOfMass.Grams, UnitsOfVolume.Liters) * 100);
     }
 
     /**
@@ -71,7 +72,7 @@ public class MassConcentration implements Comparable<MassConcentration> {
      *
      * @throws IllegalArgumentException if either {@code unitsOfMass} or {@code unitsOfVolume} is {@code null}
      */
-    public final double getValue(UnitsOfMass unitsOfMass, Volume.Units unitsOfVolume) {
+    public final double getValue(UnitsOfMass unitsOfMass, UnitsOfVolume unitsOfVolume) {
         if (unitsOfMass == null || unitsOfVolume == null) {
             throw new IllegalArgumentException("MassConcentration cannot be represented without units of measurement "
                     + "for both mass and volume.");
