@@ -24,6 +24,8 @@
 
 package com.ciderref.sdk.property;
 
+import com.ciderref.sdk.property.units.UnitsOfMass;
+
 /**
  * Represents the mass of a constituent substance in a mixture divided by the volume of the mixture. Immutable and
  * thread-safe.
@@ -34,6 +36,7 @@ public class MassConcentration implements Comparable<MassConcentration> {
 
     private final Mass mass;
     private final Volume volume;
+    private final Long comparableValue;
 
     /**
      * Constructor.
@@ -54,25 +57,26 @@ public class MassConcentration implements Comparable<MassConcentration> {
         }
         this.mass = mass;
         this.volume = volume;
+        this.comparableValue = Math.round(getValue(UnitsOfMass.Grams, Volume.Units.Liters) * 100);
     }
 
     /**
      * This mass concentration expressed in specific units of measurement.
      *
-     * @param massUnits (not null) the mass unit of measurement in which to return this volume; e.g. the unit of
+     * @param unitsOfMass (not null) the mass unit of measurement in which to return this volume; e.g. the unit of
      *                  measurement in the numerator in the unit expression.
-     * @param volumeUnits (not null) the volume unit of measurement in which to return this volume; e.g. the
+     * @param unitsOfVolume (not null) the volume unit of measurement in which to return this volume; e.g. the
      *                    unit of measurement in the denominator in the unit expression.
-     * @return this mass concentration expressed in {@code massUnits} per {@code volumeUnits}.
+     * @return this mass concentration expressed in {@code unitsOfMass} per {@code unitsOfVolume}.
      *
-     * @throws IllegalArgumentException if either {@code massUnits} or {@code volumeUnits} is {@code null}
+     * @throws IllegalArgumentException if either {@code unitsOfMass} or {@code unitsOfVolume} is {@code null}
      */
-    public double getValue(Mass.Units massUnits, Volume.Units volumeUnits) {
-        if (massUnits == null || volumeUnits == null) {
+    public final double getValue(UnitsOfMass unitsOfMass, Volume.Units unitsOfVolume) {
+        if (unitsOfMass == null || unitsOfVolume == null) {
             throw new IllegalArgumentException("MassConcentration cannot be represented without units of measurement "
                     + "for both mass and volume.");
         }
-        return mass.getValue(massUnits) / volume.getValue(volumeUnits);
+        return mass.getValue(unitsOfMass) / volume.getValue(unitsOfVolume);
     }
 
     /**
@@ -88,7 +92,7 @@ public class MassConcentration implements Comparable<MassConcentration> {
      */
     @Override
     public int compareTo(MassConcentration otherMassConcentration) {
-        return Long.compare(getComparableValue(), otherMassConcentration.getComparableValue());
+        return comparableValue.compareTo(otherMassConcentration.comparableValue);
     }
 
     /**
@@ -116,12 +120,7 @@ public class MassConcentration implements Comparable<MassConcentration> {
      */
     @Override
     public final int hashCode() {
-        return ((Long) getComparableValue()).hashCode();
-    }
-
-    // Returns temperature in hundredths of a gram per liter. Used to sidestep floating point comparison issues.
-    private long getComparableValue() {
-        return  Math.round(getValue(Mass.Units.Grams, Volume.Units.Liters) * 100);
+        return comparableValue.hashCode();
     }
 
 }

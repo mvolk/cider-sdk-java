@@ -24,15 +24,16 @@
 
 package com.ciderref.sdk.property;
 
-import static com.ciderref.sdk.property.Mass.Units.Grams;
-import static com.ciderref.sdk.property.Mass.Units.Kilograms;
-import static com.ciderref.sdk.property.Mass.Units.Ounces;
-import static com.ciderref.sdk.property.Mass.Units.Pounds;
+import static com.ciderref.sdk.property.units.UnitsOfMass.Grams;
+import static com.ciderref.sdk.property.units.UnitsOfMass.Kilograms;
+import static com.ciderref.sdk.property.units.UnitsOfMass.Ounces;
+import static com.ciderref.sdk.property.units.UnitsOfMass.Pounds;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 
 /**
@@ -45,36 +46,6 @@ public class MassTest {
     private static final double TOLERANCE_IN_KILOGRAMS = 1E-5;
     private static final double TOLERANCE_IN_OUNCES = 3.527E-4;
     private static final double TOLERANCE_IN_POUNDS = 2.205E-5;
-
-    /** Mass.Units.values() should return 4 values. */
-    @Test
-    public void testCountOfUnitValues() {
-        assertEquals(4, Mass.Units.values().length);
-    }
-
-    /** Mass.Units.valueOf("Grams") should return Grams. */
-    @Test
-    public void testUnitsIncludeMilligrams() {
-        assertEquals(Grams, Mass.Units.valueOf("Grams"));
-    }
-
-    /** Mass.Units.valueOf("Kilograms") should return Kilograms. */
-    @Test
-    public void testUnitsIncludeGrams() {
-        assertEquals(Kilograms, Mass.Units.valueOf("Kilograms"));
-    }
-
-    /** Mass.Units.valueOf("Ounces") should return Ounces. */
-    @Test
-    public void testUnitsIncludeOunces() {
-        assertEquals(Ounces, Mass.Units.valueOf("Ounces"));
-    }
-
-    /** Mass.Units.valueOf("Pounds") should return Pounds. */
-    @Test
-    public void testUnitsIncludePounds() {
-        assertEquals(Pounds, Mass.Units.valueOf("Pounds"));
-    }
 
     /** Constructing with null units of measurement produces an exception. */
     @Test(expected = IllegalArgumentException.class)
@@ -273,7 +244,11 @@ public class MassTest {
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     public void equalsContract() {
-        EqualsVerifier.forClass(Mass.class).verify();
+        EqualsVerifier
+                .forClass(Mass.class)
+                .withIgnoredFields("magnitude", "units", "conversion")
+                .suppress(Warning.NULL_FIELDS) // comparableValue should never be null
+                .verify();
     }
 
     /** Hash code value is as expected. */

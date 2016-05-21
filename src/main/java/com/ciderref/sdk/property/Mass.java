@@ -24,6 +24,10 @@
 
 package com.ciderref.sdk.property;
 
+import com.ciderref.sdk.property.units.ConversionFunctions;
+import com.ciderref.sdk.property.units.UnitsOfMass;
+import com.ciderref.sdk.property.units.UnitsOfMassConversionFunctions;
+
 /**
  * Represents a mass. Conversion factors from http://www.nist.gov/pml/wmd/pubs/upload/AppC-12-hb44-final.pdf.
  * Immutable and thread-safe.
@@ -31,47 +35,38 @@ package com.ciderref.sdk.property;
 @SuppressWarnings("PMD.ShortClassName")
 public class Mass implements Comparable<Mass> {
 
-    public enum Units { Grams, Kilograms, Ounces, Pounds }
-
-    private final double grams;
+    private final double magnitude;
+    private final UnitsOfMass units;
+    private final Long comparableMass;
+    private final UnitsOfMassConversionFunctions conversion;
 
     /**
      * Constructor.
      *
-     * @param value the amount of mass.
+     * @param magnitude the amount of mass.
      * @param units (not null) the units of measurement in which the amount of mass is expressed. For units which
      *              represent weight, and not mass, standard Earth gravity is assumed.
      *
      * @throws IllegalArgumentException if {@code units} is {@code null}
      */
-    public Mass(double value, Units units) {
+    public Mass(double magnitude, UnitsOfMass units) {
         if (units == null) {
             throw new IllegalArgumentException("Mass cannot be represented without units of measurement.");
         }
-        if (Double.isNaN(value)) {
+        if (Double.isNaN(magnitude)) {
             throw new IllegalArgumentException("The magnitude of a mass must be represented by a number.");
         }
-        if (Double.compare(value, 0.0) < 0) {
+        if (Double.compare(magnitude, 0.0) < 0) {
             throw new IllegalArgumentException("The magnitude of a mass cannot be less than zero.");
         }
-        if (Double.isInfinite(value)) {
+        if (Double.isInfinite(magnitude)) {
             throw new IllegalArgumentException("This implementation does not support representation of infinite "
                     + "mass.");
         }
-        switch (units) {
-            case Kilograms:
-                this.grams = value * 1000.0;
-                break;
-            case Ounces:
-                this.grams = value * 28.349523125;
-                break;
-            case Pounds:
-                this.grams = value * 453.59237;
-                break;
-            default: // Grams
-                this.grams = value;
-                break;
-        }
+        this.conversion = ConversionFunctions.getForUnitsOfMass();
+        this.magnitude = magnitude;
+        this.units = units;
+        this.comparableMass = Math.round(conversion.getFunction(units, UnitsOfMass.Grams).applyTo(magnitude) * 100);
     }
 
     /**
@@ -81,21 +76,13 @@ public class Mass implements Comparable<Mass> {
      * @return this mass expressed in the given unit of measurement
      *
      * @throws IllegalArgumentException if {@code units} is null
+     * @throws com.ciderref.sdk.property.units.UnsupportedConversionException if unable to convert to the given units.
      */
-    public double getValue(Units units) {
+    public double getValue(UnitsOfMass units) {
         if (units == null) {
             throw new IllegalArgumentException("Mass cannot be represented without units of measurement.");
         }
-        switch (units) {
-            case Kilograms:
-                return grams / 1000;
-            case Ounces:
-                return grams / 28.349523125;
-            case Pounds:
-                return grams / 453.59237;
-            default: // Grams
-                return grams;
-        }
+        return conversion.getFunction(this.units, units).applyTo(magnitude);
     }
 
     /**
@@ -109,7 +96,7 @@ public class Mass implements Comparable<Mass> {
      */
     @Override
     public int compareTo(Mass otherMass) {
-        return Long.compare(getComparableValue(), otherMass.getComparableValue());
+        return comparableMass.compareTo(otherMass.comparableMass);
     }
 
     /**
@@ -137,12 +124,7 @@ public class Mass implements Comparable<Mass> {
      */
     @Override
     public final int hashCode() {
-        return ((Long) getComparableValue()).hashCode();
-    }
-
-    // Returns temperature in hundredths of a gram. Used to sidestep floating point comparison issues.
-    private long getComparableValue() {
-        return Math.round(grams * 100);
+        return comparableMass.hashCode();
     }
 
 }
