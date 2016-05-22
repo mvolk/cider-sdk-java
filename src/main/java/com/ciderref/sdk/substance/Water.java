@@ -24,9 +24,14 @@
 
 package com.ciderref.sdk.substance;
 
+import com.ciderref.sdk.property.Density;
 import com.ciderref.sdk.property.IllegalPropertyValueException;
+import com.ciderref.sdk.property.Mass;
 import com.ciderref.sdk.property.Temperature;
+import com.ciderref.sdk.property.Volume;
+import com.ciderref.sdk.property.units.UnitsOfMass;
 import com.ciderref.sdk.property.units.UnitsOfTemperature;
+import com.ciderref.sdk.property.units.UnitsOfVolume;
 
 import java.text.DecimalFormat;
 
@@ -41,19 +46,21 @@ public class Water {
     /** The boiling point of pure water under standard pressure. */
     public static final Temperature STANDARD_BOILING_POINT = new Temperature(100, UnitsOfTemperature.Celsius);
 
+    private static final Volume ONE_LITER = new Volume(1, UnitsOfVolume.Liters);
+
     /**
      * The density of pure water at a given temperature. Accurate to within 0.1 g/L between 0℃ and 100℃. Accurate
      * within 0.05 g/L between 10℃ and 20℃ inclusive.
      *
      * @param temperature the temperature of the water. Valid values are between {@link #STANDARD_FREEZING_POINT} and
      *                    {@link #STANDARD_BOILING_POINT} inclusive.
-     * @return the density of the water in g/L at the given temperature.
+     * @return (not null) the density of pure water at the given temperature.
      *
      * @throws IllegalArgumentException if {@code temperature} is {@code null}
      * @throws IllegalPropertyValueException if {@code temperature} is below {@link #STANDARD_FREEZING_POINT} or
      *         exceeds {@link #STANDARD_BOILING_POINT}
      */
-    public double getDensity(Temperature temperature) {
+    public Density getDensity(Temperature temperature) {
         if (temperature == null) {
             throw new IllegalArgumentException("The temperature argument may not be null.");
         }
@@ -66,7 +73,7 @@ public class Water {
         // The following regression was developed using MS Excel and datapoints cross-verified in multiple sources.
         // Solid from 0℃ to 50℃, but accuracy degrades a little above 50℃.
         // Higher-order polynomials performed only marginally better.
-        double sg = 999.85
+        double gramsPerLiter = 999.85
                 + (0.0531 * degreesC)
                 - (0.0075 * Math.pow(degreesC, 2.0))
                 + (0.00004 * Math.pow(degreesC, 3.0))
@@ -79,7 +86,7 @@ public class Water {
                     - (0.0019 * Math.pow(degreesCOver50, 2.0))
                     + (0.00009 * Math.pow(degreesCOver50, 3.0))
                     - (0.0000009 * Math.pow(degreesCOver50, 4.0));
-            sg = sg - correction;
+            gramsPerLiter = gramsPerLiter - correction;
         }
         // This regression provides further correction above 70℃
         if (degreesC > 70) {
@@ -87,9 +94,9 @@ public class Water {
             double correction = 0.0463
                     + (0.0024 * degreesCOver70)
                     + (0.0006 * Math.pow(degreesCOver70, 2.0));
-            sg = sg + correction;
+            gramsPerLiter = gramsPerLiter + correction;
         }
-        return sg;
+        return new Density(new Mass(gramsPerLiter, UnitsOfMass.Grams), ONE_LITER);
     }
 
 }

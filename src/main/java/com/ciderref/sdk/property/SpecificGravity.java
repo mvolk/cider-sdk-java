@@ -24,6 +24,8 @@
 
 package com.ciderref.sdk.property;
 
+import com.ciderref.sdk.property.units.UnitsOfMass;
+import com.ciderref.sdk.property.units.UnitsOfVolume;
 import com.ciderref.sdk.substance.Water;
 
 import java.text.DecimalFormat;
@@ -78,7 +80,11 @@ public class SpecificGravity implements Comparable<SpecificGravity> {
         checkSpecificGravityValidity(measuredSpecificGravity, "measured specific gravity");
 
         Water water = new Water();
-        double correctionFactor = water.getDensity(calibrationTemperature) / water.getDensity(measuredTemperature);
+        double densityofWaterAtCalibrationTemperature =
+                water.getDensity(calibrationTemperature).getValue(UnitsOfMass.Grams, UnitsOfVolume.Liters);
+        double densityOfWaterAtActualTemperature =
+                water.getDensity(measuredTemperature).getValue(UnitsOfMass.Grams, UnitsOfVolume.Liters);
+        double correctionFactor = densityofWaterAtCalibrationTemperature / densityOfWaterAtActualTemperature;
         this.value = correctionFactor * measuredSpecificGravity;
 
         checkSpecificGravityValidity(this.value, "corrected specific gravity");
