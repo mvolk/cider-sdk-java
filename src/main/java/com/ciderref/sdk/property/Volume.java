@@ -24,7 +24,9 @@
 
 package com.ciderref.sdk.property;
 
+import com.ciderref.sdk.property.units.ConversionFunctions;
 import com.ciderref.sdk.property.units.UnitsOfVolume;
+import com.ciderref.sdk.property.units.VolumeConversionFunctions;
 
 /**
  * Represents a volume to the nearest microliter. Calculations (such are unit conversions) are performed with full
@@ -32,7 +34,10 @@ import com.ciderref.sdk.property.units.UnitsOfVolume;
  */
 public class Volume implements Comparable<Volume> {
 
-    private final double milliliters;
+    private final double magnitude;
+    private final UnitsOfVolume units;
+    private final Long comparableValue;
+    private final VolumeConversionFunctions conversion;
 
     /**
      * Constructor.
@@ -56,17 +61,10 @@ public class Volume implements Comparable<Volume> {
             throw new IllegalArgumentException("This implementation does not support representation of infinite "
                     + "volume.");
         }
-        switch (units) {
-            case Liters:
-                this.milliliters = value * 1000.0;
-                break;
-            case USGallons:
-                this.milliliters = value * 3785.41178;
-                break;
-            default: // Milliliters
-                this.milliliters = value;
-                break;
-        }
+        this.magnitude = value;
+        this.units = units;
+        this.conversion = ConversionFunctions.getForUnitsOfVolume();
+        this.comparableValue = Math.round(getValue(UnitsOfVolume.Milliliters) * 1000);
     }
 
     /**
@@ -77,18 +75,11 @@ public class Volume implements Comparable<Volume> {
      *
      * @throws IllegalArgumentException if {@code units} is null
      */
-    public double getValue(UnitsOfVolume units) {
+    public final double getValue(UnitsOfVolume units) {
         if (units == null) {
             throw new IllegalArgumentException("Volume cannot be represented without units of measurement.");
         }
-        switch (units) {
-            case Liters:
-                return milliliters / 1000.0;
-            case USGallons:
-                return milliliters / 3785.411784;
-            default: // Milliliters
-                return milliliters;
-        }
+        return conversion.getFunction(this.units, units).applyTo(magnitude);
     }
 
     /**
@@ -96,13 +87,15 @@ public class Volume implements Comparable<Volume> {
      * "half up" rounding strategy prior to comparison.
      *
      * @param otherVolume the other volume
-     * @return {@code true} if this volume is larger than {@code otherVolume}; {@code false} otherwise.
+     * @return the value {@code 0} if this volume is the same as {@code otherVolume}; a value less than
+     *         {@code 0} if this volume is smaller than {@code otherVolume}; and a value greater than {@code 0}
+     *         if this volume is larger than {@code otherVolume}.
      *
-     * @throws NullPointerException if {@code otherVolume} is null
+     * @throws NullPointerException if {@code otherTemperature} is null
      */
     @Override
     public int compareTo(Volume otherVolume) {
-        return Long.compare(getComparableValue(), otherVolume.getComparableValue());
+        return comparableValue.compareTo(otherVolume.comparableValue);
     }
 
     /**
@@ -130,12 +123,7 @@ public class Volume implements Comparable<Volume> {
      */
     @Override
     public final int hashCode() {
-        return ((Long) getComparableValue()).hashCode();
-    }
-
-    // Returns volume in microliters. Used to sidestep floating point comparison issues.
-    private long getComparableValue() {
-        return Math.round(milliliters * 1000);
+        return comparableValue.hashCode();
     }
 
 }

@@ -24,38 +24,36 @@
 
 package com.ciderref.sdk.property.units;
 
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.Test;
+
 /**
- * Provides units conversion functions and a point of injections for mocks to assist in unit testing.
+ * Unit tests for {@link VolumeConversionFunctions}.
  */
-public final class ConversionFunctions {
+public class VolumeConversionFunctionsTest {
 
-    private ConversionFunctions() { }
-
-    /**
-     * Provides a collection of units of mass conversion functions.
-     *
-     * @return (not null) a collection of units of mass conversion functions
-     */
-    public static MassConversionFunctions getForUnitsOfMass() {
-        return new MassConversionFunctions();
+    /** Conversion from null units produces exception. */
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetFunctionWithNullFromUnitsThrows() {
+        new VolumeConversionFunctions().getFunction(null, UnitsOfVolume.Milliliters);
     }
 
-    /**
-     * Provides a collection of functions for converting temperature expressed in one unit of measurement to another.
-     *
-     * @return (not null) a collection of units of temperature conversion functions
-     */
-    public static TemperatureConversionFunctions getForUnitsOfTemperature() {
-        return new TemperatureConversionFunctions();
+    /** Conversion to null units produces exception. */
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetFunctionWithNullToUnitsThrows() {
+        new VolumeConversionFunctions().getFunction(UnitsOfVolume.Milliliters, null);
     }
 
-    /**
-     * Provides a collection of functions for converting volume expressed in one unit of measurement to another.
-     *
-     * @return (not null) a collection of units of volume conversion functions
-     */
-    public static VolumeConversionFunctions getForUnitsOfVolume() {
-        return new VolumeConversionFunctions();
+    /** Functions are provided for all possible permutations of from and to units. */
+    @Test
+    public void testGetFunctionAllPermutations() {
+        VolumeConversionFunctions library = new VolumeConversionFunctions();
+        for (UnitsOfVolume fromUnits : UnitsOfVolume.values()) {
+            for (UnitsOfVolume toUnits : UnitsOfVolume.values()) {
+                assertNotNull(library.getFunction(fromUnits, toUnits));
+            }
+        }
     }
 
 }

@@ -32,6 +32,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 
 /**
@@ -236,7 +237,11 @@ public class VolumeTest {
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     public void equalsContract() {
-        EqualsVerifier.forClass(Volume.class).verify();
+        EqualsVerifier
+                .forClass(Volume.class)
+                .withIgnoredFields("magnitude", "units", "conversion")
+                .suppress(Warning.NULL_FIELDS) // comparableValue should never be null
+                .verify();
     }
 
     /** Hash code value is as expected. */
