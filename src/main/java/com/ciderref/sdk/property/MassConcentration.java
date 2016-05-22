@@ -42,7 +42,7 @@ public class MassConcentration implements Comparable<MassConcentration> {
     /**
      * Constructor.
      *
-     * @param mass (not null) the amount of mass in the {@code volume}.
+     * @param mass (not null) the mass of the substance of interest in the {@code volume}.
      * @param volume (not null) the size of the volume.
      *
      * @throws IllegalArgumentException if either {@code mass} or {@code volume} is {@code null} or if the
@@ -50,11 +50,12 @@ public class MassConcentration implements Comparable<MassConcentration> {
      */
     public MassConcentration(Mass mass, Volume volume) {
         if (mass == null || volume == null) {
-            throw new IllegalArgumentException("MassConcentration requires knowledge of both mass and volume.");
+            throw new IllegalArgumentException(getClass().getSimpleName()
+                    + " requires knowledge of both mass and volume.");
         }
         if (ZERO_VOLUME.equals(volume)) {
-            throw new IllegalArgumentException("MassConcentration is undefined when the mass does not occupy "
-                    + "any volume.");
+            throw new IllegalArgumentException(getClass().getSimpleName()
+                    + " is undefined when the mass does not occupy any volume.");
         }
         this.mass = mass;
         this.volume = volume;
@@ -74,8 +75,8 @@ public class MassConcentration implements Comparable<MassConcentration> {
      */
     public final double getValue(UnitsOfMass unitsOfMass, UnitsOfVolume unitsOfVolume) {
         if (unitsOfMass == null || unitsOfVolume == null) {
-            throw new IllegalArgumentException("MassConcentration cannot be represented without units of measurement "
-                    + "for both mass and volume.");
+            throw new IllegalArgumentException(getClass().getSimpleName()
+                    + " cannot be represented without units of measurement for both mass and volume.");
         }
         return mass.getValue(unitsOfMass) / volume.getValue(unitsOfVolume);
     }
