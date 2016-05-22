@@ -89,7 +89,9 @@ public class Mass implements Comparable<Mass> {
      * are considered equivalent.
      *
      * @param otherMass the other mass
-     * @return {@code true} if this mass is larger than {@code otherMass}; {@code false} otherwise.
+     * @return the value {@code 0} if this mass is the same as {@code otherMass}; a value less than
+     *         {@code 0} if this mass is less than {@code otherMass}; and a value greater than {@code 0}
+     *         if this mass is larger than {@code otherMass}.
      *
      * @throws NullPointerException if {@code otherMass} is null
      */
