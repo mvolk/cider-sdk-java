@@ -172,4 +172,10 @@ public class SweetnessTest {
         assertEquals(2, Sweetness.allValuesOf(new SpecificGravity(1.009)).size());
     }
 
+    /** Ensure that allValuesOf is correct when null is passed in. */
+    @Test(expected = IllegalArgumentException.class)
+    public void testAllValuesOfNull() {
+        Sweetness.allValuesOf(null);
+    }
+
 }

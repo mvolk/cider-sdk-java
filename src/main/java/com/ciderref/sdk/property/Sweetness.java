@@ -83,6 +83,9 @@ public enum Sweetness {
      * @throws IllegalArgumentException if {@code specificGravity} is null.
      */
     public static List<Sweetness> allValuesOf(SpecificGravity specificGravity) {
+        if (specificGravity == null) {
+            throw new IllegalArgumentException("Sweetness cannot be determined without knowing the specific gravity.");
+        }
         List<Sweetness> sweetnesses = new ArrayList<>();
         for (Sweetness sweetness : Sweetness.values()) {
             if (specificGravity.compareTo(sweetness.minimumSg) >= 0
