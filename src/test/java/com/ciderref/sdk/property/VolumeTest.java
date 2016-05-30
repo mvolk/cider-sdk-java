@@ -41,6 +41,12 @@ import org.junit.Test;
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.ExcessivePublicCount", "PMD.TooManyStaticImports"})
 public class VolumeTest {
 
+    /** One liter is in fact one liter. */
+    @Test
+    public void testOneLiter() {
+        assertEquals(1, Volume.ONE_LITER.getValue(Liters), 0);
+    }
+
     /** Constructing with null units of measurement produces an exception. */
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorNullUnitsThrows() {

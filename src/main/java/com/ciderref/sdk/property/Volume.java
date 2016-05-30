@@ -34,6 +34,9 @@ import com.ciderref.sdk.property.units.VolumeConversionFunctions;
  */
 public class Volume implements Comparable<Volume> {
 
+    /** One liter. */
+    public static final Volume ONE_LITER = new Volume(1.0, UnitsOfVolume.Liters);
+
     private final double magnitude;
     private final UnitsOfVolume units;
     private final Long comparableValue;
