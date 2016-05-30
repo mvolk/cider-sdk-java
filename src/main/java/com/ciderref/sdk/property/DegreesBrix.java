@@ -25,10 +25,10 @@
 package com.ciderref.sdk.property;
 
 /**
- * BRIX scale measure of sugar content in a fluid.
+ * The sugar content in a aqueous solution. One degree Brix is equivalent to one gram of sucrose per 100 grams of pure
+ * water.
  */
-@SuppressWarnings("PMD.ShortClassName")
-public class Brix implements Comparable<Brix> {
+public class DegreesBrix implements Comparable<DegreesBrix> {
 
     private final double value;
     private final Long comparableBrix;
@@ -36,10 +36,10 @@ public class Brix implements Comparable<Brix> {
     /**
      * Constructor.
      *
-     * @param value degrees Brix.
+     * @param value degrees DegreesBrix.
      * @throws IllegalArgumentException if {@code value} is less than zero, exceeds 25, or is not a number.
      */
-    public Brix(double value) {
+    public DegreesBrix(double value) {
         if (Double.isNaN(value)) {
             throw new IllegalArgumentException("A Brix value must be represented by a number.");
         }
@@ -55,9 +55,9 @@ public class Brix implements Comparable<Brix> {
     }
 
     /**
-     * Obtain the numeric value of this Brix.
+     * Obtain the numeric value of this DegreesBrix.
      *
-     * @return degrees Brix.
+     * @return degrees DegreesBrix.
      */
     public double getValue() {
         return value;
@@ -65,19 +65,19 @@ public class Brix implements Comparable<Brix> {
 
 
     /**
-     * Compares this Brix to another Brix. Note that consistent with the 5 decimal place accuracy of the Brix scale,
-     * values are compared after rounding them half-up to five decimal places.
+     * Compares this object to another {@link DegreesBrix}. Note that consistent with the 5 decimal place accuracy of
+     * the Brix scale, values are compared after rounding them half-up to five decimal places.
      *
-     * @param otherBrix the other Brix
-     * @return the value {@code 0} if this Brix is the same as {@code otherBrix}; a value less than
-     *         {@code 0} if this Brix is less than {@code otherBrix}; and a value greater than {@code 0}
-     *         if this Brix is larger than {@code otherBrix}.
+     * @param otherDegreesBrix the other Brix
+     * @return the value {@code 0} if this Brix value is the same as {@code otherDegreesBrix}; a value less than
+     *         {@code 0} if this Brix value is less than {@code otherDegreesBrix}; and a value greater than {@code 0}
+     *         if this Brix value is larger than {@code otherDegreesBrix}.
      *
-     * @throws NullPointerException if {@code otherBrix} is null
+     * @throws NullPointerException if {@code otherDegreesBrix} is null
      */
     @Override
-    public int compareTo(Brix otherBrix) {
-        return comparableBrix.compareTo(otherBrix.comparableBrix);
+    public int compareTo(DegreesBrix otherDegreesBrix) {
+        return comparableBrix.compareTo(otherDegreesBrix.comparableBrix);
     }
 
     /**
@@ -87,7 +87,7 @@ public class Brix implements Comparable<Brix> {
      * <ul>
      *     <li>The other object is not {@code null}</li>
      *     <li>The other object is an {@code instanceof} this class</li>
-     *     <li>This object {@link #compareTo(Brix)} the other object returns {@code 0} (equivalent)</li>
+     *     <li>This object {@link #compareTo(DegreesBrix)} the other object returns {@code 0} (equivalent)</li>
      * </ul>
      *
      * @param other (nullable) the object to compare with this object
@@ -95,11 +95,11 @@ public class Brix implements Comparable<Brix> {
      */
     @Override
     public final boolean equals(Object other) {
-        return other instanceof Brix && (other == this || this.compareTo((Brix) other) == 0);
+        return other instanceof DegreesBrix && (other == this || this.compareTo((DegreesBrix) other) == 0);
     }
 
     /**
-     * A units-agnostic hash code for this Brix.
+     * A hash code for this Brix value.
      *
      * @return a hash code value for this object
      */

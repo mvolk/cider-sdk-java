@@ -7,7 +7,7 @@ Hard cider models and calculators to support cidermaking tools.
 ### Type-safe Physical Properties Library
 
 The `com.ciderref.sdk.property` package contains classes for representing temperature, mass, volume, mass concentration,
-density, brix, specific gravity, cider sweetness categories and percent alcohol by volume. Units of measurement
+density, Brix, specific gravity, cider sweetness categories and percent alcohol by volume. Units of measurement
 conversions are supported, and the library provides considerable protection against accidental calculation in the
 wrong units of measurement.
 

@@ -26,7 +26,7 @@ package com.ciderref.sdk.substance;
 
 import static org.junit.Assert.assertEquals;
 
-import com.ciderref.sdk.property.Brix;
+import com.ciderref.sdk.property.DegreesBrix;
 import com.ciderref.sdk.property.SpecificGravity;
 import org.junit.Test;
 
@@ -76,8 +76,8 @@ public class SugarWaterTest {
 
     private void testGetBrix(double sgValue, double expectedBrixValue) {
         SpecificGravity specificGravity = new SpecificGravity(sgValue);
-        Brix actualBrix = new SugarWater().getBrix(specificGravity);
-        assertEquals(expectedBrixValue, actualBrix.getValue(), 0.0015);
+        DegreesBrix actualDegreesBrix = new SugarWater().getBrix(specificGravity);
+        assertEquals(expectedBrixValue, actualDegreesBrix.getValue(), 0.0015);
     }
 
 }

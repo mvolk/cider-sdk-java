@@ -24,7 +24,7 @@
 
 package com.ciderref.sdk.substance;
 
-import com.ciderref.sdk.property.Brix;
+import com.ciderref.sdk.property.DegreesBrix;
 import com.ciderref.sdk.property.SpecificGravity;
 
 /**
@@ -33,15 +33,15 @@ import com.ciderref.sdk.property.SpecificGravity;
 public class SugarWater {
 
     /**
-     * Determine the Brix given the specific gravity.
+     * Determine the degrees Brix given the specific gravity.
      *
      * @param specificGravity (not null) the specific gravity of the solution
-     * @return (not null) the Brix of the solution
+     * @return (not null) the degrees Brix of the solution
      * @throws IllegalArgumentException if {@code specificGravity} is null.
      */
-    public Brix getBrix(SpecificGravity specificGravity) {
+    public DegreesBrix getBrix(SpecificGravity specificGravity) {
         if (specificGravity == null) {
-            throw new IllegalArgumentException("Specific gravity must be known to determine Brix.");
+            throw new IllegalArgumentException("Specific gravity must be known to determine degrees Brix.");
         }
         // From https://en.wikipedia.org/wiki/Brix, valid for specific gravities of less than 1.17874 (40 degrees Brix)
         double value = ((182.4601 * specificGravity.getValue() - 775.6821) * specificGravity.getValue() + 1262.7794)
@@ -52,7 +52,7 @@ public class SugarWater {
             //  effectively what this means is that there is no sugar in the water.
             value = 0;
         }
-        return new Brix(value);
+        return new DegreesBrix(value);
     }
 
 }
