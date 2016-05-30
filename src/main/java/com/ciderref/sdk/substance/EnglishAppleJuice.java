@@ -24,19 +24,21 @@
 
 package com.ciderref.sdk.substance;
 
+import com.ciderref.sdk.property.SugarConcentrationProfile;
+
 /**
  * Properties of Apple Juice from the United Kingdom.
  */
 public class EnglishAppleJuice extends GenericAppleJuice implements AppleJuice {
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
     @Override
-    protected double getAverageSugarCoefficient() {
-        return 2160.0;
-    }
-
-    @Override
-    protected double getSugarCoefficientStandardDeviation() {
-        return 120.0;
+    public SugarConcentrationProfile getSugarConcentrationProfile() {
+        return new SugarConcentrationProfile(2160, 120);
     }
 
 }

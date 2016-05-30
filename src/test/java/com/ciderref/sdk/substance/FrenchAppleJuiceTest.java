@@ -24,25 +24,22 @@
 
 package com.ciderref.sdk.substance;
 
+import static org.junit.Assert.assertTrue;
+
+import com.ciderref.sdk.property.SugarConcentrationProfile;
+import org.junit.Test;
+
 /**
  * Unit tests for {@link FrenchAppleJuice}.
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
-public class FrenchAppleJuiceTest extends GenericAppleJuiceTest {
+public class FrenchAppleJuiceTest {
 
-    @Override
-    protected double getAverageSugarCoefficient() {
-        return 2140;
-    }
-
-    @Override
-    protected double getStandardDeviation() {
-        return 100;
-    }
-
-    @Override
-    protected GenericAppleJuice getInstanceOfClassUnderTest() {
-        return new FrenchAppleJuice();
+    /** Sugar profile matches expectations. */
+    @Test
+    public void testGetSugarConcentrationProfile() {
+        assertTrue(new FrenchAppleJuice().getSugarConcentrationProfile()
+                .equals(new SugarConcentrationProfile(2140, 100)));
     }
 
 }

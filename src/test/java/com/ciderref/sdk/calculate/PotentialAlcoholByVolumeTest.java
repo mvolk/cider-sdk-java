@@ -31,6 +31,7 @@ import static org.mockito.Mockito.when;
 import com.ciderref.sdk.property.Mass;
 import com.ciderref.sdk.property.MassConcentration;
 import com.ciderref.sdk.property.SpecificGravity;
+import com.ciderref.sdk.property.SugarConcentrationProfile;
 import com.ciderref.sdk.property.Volume;
 import com.ciderref.sdk.property.units.UnitsOfMass;
 import com.ciderref.sdk.property.units.UnitsOfVolume;
@@ -42,13 +43,15 @@ import org.junit.Test;
  * Unit tests for {@link PotentialAlcoholByVolume}.
  */
 public class PotentialAlcoholByVolumeTest {
-    private AppleJuice mockAppleJuice;
+    private SugarConcentrationProfile mockSugarConcentrationProfile;
     private PotentialAlcoholByVolume potentialAbv;
 
     /** Set up test w/mock apple juice. */
     @Before
     public void setUp() {
-        mockAppleJuice = mock(AppleJuice.class);
+        AppleJuice mockAppleJuice = mock(AppleJuice.class);
+        mockSugarConcentrationProfile = mock(SugarConcentrationProfile.class);
+        when(mockAppleJuice.getSugarConcentrationProfile()).thenReturn(mockSugarConcentrationProfile);
         potentialAbv = new PotentialAlcoholByVolume(mockAppleJuice);
     }
 
@@ -70,7 +73,7 @@ public class PotentialAlcoholByVolumeTest {
         SpecificGravity sg = new SpecificGravity(1.020);
         MassConcentration sugarContent =
                 new MassConcentration(new Mass(1, UnitsOfMass.Grams), new Volume(1, UnitsOfVolume.Liters));
-        when(mockAppleJuice.getMinimumSugarConcentration(sg)).thenReturn(sugarContent);
+        when(mockSugarConcentrationProfile.getMinimumSugarConcentration(sg)).thenReturn(sugarContent);
         assertEquals(0.06, potentialAbv.getMinimum(sg).getValue(), 0);
     }
 
@@ -86,7 +89,7 @@ public class PotentialAlcoholByVolumeTest {
         SpecificGravity sg = new SpecificGravity(1.030);
         MassConcentration sugarContent =
                 new MassConcentration(new Mass(2, UnitsOfMass.Grams), new Volume(1, UnitsOfVolume.Liters));
-        when(mockAppleJuice.getAverageSugarConcentration(sg)).thenReturn(sugarContent);
+        when(mockSugarConcentrationProfile.getAverageSugarConcentration(sg)).thenReturn(sugarContent);
         assertEquals(2 * 0.06, potentialAbv.getAverage(sg).getValue(), 0);
     }
 
@@ -102,7 +105,7 @@ public class PotentialAlcoholByVolumeTest {
         SpecificGravity sg = new SpecificGravity(1.040);
         MassConcentration sugarContent =
                 new MassConcentration(new Mass(4, UnitsOfMass.Grams), new Volume(1, UnitsOfVolume.Liters));
-        when(mockAppleJuice.getMaximumSugarConcentration(sg)).thenReturn(sugarContent);
+        when(mockSugarConcentrationProfile.getMaximumSugarConcentration(sg)).thenReturn(sugarContent);
         assertEquals(4 * 0.06, potentialAbv.getMaximum(sg).getValue(), 0);
     }
 

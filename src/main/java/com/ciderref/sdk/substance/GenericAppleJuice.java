@@ -27,6 +27,7 @@ package com.ciderref.sdk.substance;
 import com.ciderref.sdk.property.Mass;
 import com.ciderref.sdk.property.MassConcentration;
 import com.ciderref.sdk.property.SpecificGravity;
+import com.ciderref.sdk.property.SugarConcentrationProfile;
 import com.ciderref.sdk.property.Temperature;
 import com.ciderref.sdk.property.Volume;
 import com.ciderref.sdk.property.units.UnitsOfMass;
@@ -40,34 +41,14 @@ import com.ciderref.sdk.property.units.UnitsOfVolume;
  */
 public class GenericAppleJuice implements AppleJuice {
 
-    private static final Volume ONE_LITER = new Volume(1, UnitsOfVolume.Liters);
-
     /**
      * {@inheritDoc}
      *
-     * @param specificGravity (not null) actual specific gravity.
      * @return {@inheritDoc}
      */
     @Override
-    public MassConcentration getAverageSugarConcentration(SpecificGravity specificGravity) {
-        requireSpecificGravity(specificGravity);
-        double sg = specificGravity.getValue();
-        double sc = getAverageSugarCoefficient();
-        return new MassConcentration(new Mass(sc * (sg - 1), UnitsOfMass.Grams), ONE_LITER);
-    }
-
-    /**
-     * {#inheritDoc}
-     *
-     * @param specificGravity (not null) actual specific gravity.
-     * @return {@inheritDoc}
-     */
-    @Override
-    public MassConcentration getMinimumSugarConcentration(SpecificGravity specificGravity) {
-        requireSpecificGravity(specificGravity);
-        double sg = specificGravity.getValue();
-        double sc = getAverageSugarCoefficient() - 2 * getSugarCoefficientStandardDeviation();
-        return new MassConcentration(new Mass(sc * (sg - 1), UnitsOfMass.Grams), ONE_LITER);
+    public SugarConcentrationProfile getSugarConcentrationProfile() {
+        return new SugarConcentrationProfile(2130, 120);
     }
 
     /**
@@ -77,22 +58,10 @@ public class GenericAppleJuice implements AppleJuice {
      * @return {@inheritDoc}
      */
     @Override
-    public MassConcentration getMaximumSugarConcentration(SpecificGravity specificGravity) {
-        requireSpecificGravity(specificGravity);
-        double sg = specificGravity.getValue();
-        double sc = getAverageSugarCoefficient() + 2 * getSugarCoefficientStandardDeviation();
-        return new MassConcentration(new Mass(sc * (sg - 1), UnitsOfMass.Grams), ONE_LITER);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param specificGravity (not null) actual specific gravity.
-     * @return {@inheritDoc}
-     */
-    @Override
-    public MassConcentration getTotalSolidsConcentration(SpecificGravity specificGravity) {
-        requireSpecificGravity(specificGravity);
+    public final MassConcentration getTotalSolidsConcentration(SpecificGravity specificGravity) {
+        if (specificGravity == null) {
+            throw new IllegalArgumentException("Specific gravity is required.");
+        }
         double sg = specificGravity.getValue();
         double brix = new SugarWater().getBrix(specificGravity).getValue();
         double pw = new Water().getDensity(new Temperature(20, UnitsOfTemperature.Celsius))
@@ -100,20 +69,6 @@ public class GenericAppleJuice implements AppleJuice {
         double density = sg * pw;
         double totalSolids = density * brix / 100;
         return new MassConcentration(new Mass(totalSolids, UnitsOfMass.Grams), new Volume(1, UnitsOfVolume.Liters));
-    }
-
-    private void requireSpecificGravity(SpecificGravity specificGravity) {
-        if (specificGravity == null) {
-            throw new IllegalArgumentException("Specific gravity is required.");
-        }
-    }
-
-    protected double getAverageSugarCoefficient() {
-        return 2130;
-    }
-
-    protected double getSugarCoefficientStandardDeviation() {
-        return 120;
     }
 
 }

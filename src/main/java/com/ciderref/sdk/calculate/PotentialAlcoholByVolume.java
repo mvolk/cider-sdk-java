@@ -59,7 +59,8 @@ public class PotentialAlcoholByVolume {
      */
     public PercentAlcoholByVolume getMinimum(SpecificGravity specificGravity) {
         requireSpecificGravity(specificGravity);
-        return new PercentAlcoholByVolume(calculateABV(appleJuice.getMinimumSugarConcentration(specificGravity)));
+        return new PercentAlcoholByVolume(calculateAbv(
+                appleJuice.getSugarConcentrationProfile().getMinimumSugarConcentration(specificGravity)));
     }
 
     /**
@@ -71,7 +72,8 @@ public class PotentialAlcoholByVolume {
      */
     public PercentAlcoholByVolume getAverage(SpecificGravity specificGravity) {
         requireSpecificGravity(specificGravity);
-        return new PercentAlcoholByVolume(calculateABV(appleJuice.getAverageSugarConcentration(specificGravity)));
+        return new PercentAlcoholByVolume(calculateAbv(
+                appleJuice.getSugarConcentrationProfile().getAverageSugarConcentration(specificGravity)));
     }
 
     /**
@@ -83,7 +85,8 @@ public class PotentialAlcoholByVolume {
      */
     public PercentAlcoholByVolume getMaximum(SpecificGravity specificGravity) {
         requireSpecificGravity(specificGravity);
-        return new PercentAlcoholByVolume(calculateABV(appleJuice.getMaximumSugarConcentration(specificGravity)));
+        return new PercentAlcoholByVolume(calculateAbv(
+                appleJuice.getSugarConcentrationProfile().getMaximumSugarConcentration(specificGravity)));
     }
 
     private void requireSpecificGravity(SpecificGravity specificGravity) {
@@ -93,7 +96,7 @@ public class PotentialAlcoholByVolume {
         }
     }
 
-    private double calculateABV(MassConcentration sugarContent) {
+    private double calculateAbv(MassConcentration sugarContent) {
         return 0.06 * sugarContent.getValue(UnitsOfMass.Grams, UnitsOfVolume.Liters);
     }
 }

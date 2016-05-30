@@ -26,6 +26,7 @@ package com.ciderref.sdk.substance;
 
 import com.ciderref.sdk.property.MassConcentration;
 import com.ciderref.sdk.property.SpecificGravity;
+import com.ciderref.sdk.property.SugarConcentrationProfile;
 
 /**
  * Properties of apple juice.
@@ -33,33 +34,11 @@ import com.ciderref.sdk.property.SpecificGravity;
 public interface AppleJuice {
 
     /**
-     * The average sugar content of apple juice of the given density.
+     * The sugar concentration profile for this juice.
      *
-     * @param specificGravity (not null) actual specific gravity.
-     * @return (not null) the average amount of sugar in apple juice of the given specific gravity.
-     * @throws IllegalArgumentException if {@code specificGravity} is null.
+     * @return (not null) the sugar concentration profile for apple juice of this type.
      */
-    MassConcentration getAverageSugarConcentration(SpecificGravity specificGravity);
-
-    /**
-     * The minimum sugar content of apple juice of the given density. "Minimum" in this context means two standard
-     * deviations less than average.
-     *
-     * @param specificGravity (not null) actual specific gravity.
-     * @return (not null) the minimum amount of sugar in apple juice of the given specific gravity.
-     * @throws IllegalArgumentException if {@code specificGravity} is null.
-     */
-    MassConcentration getMinimumSugarConcentration(SpecificGravity specificGravity);
-
-    /**
-     * The maximum sugar content of apple juice of the given density. "Maximum" in this context means two standard
-     * deviations more than average.
-     *
-     * @param specificGravity (not null) actual specific gravity.
-     * @return (not null) the maximum amount of sugar in apple juice of the given specific gravity.
-     * @throws IllegalArgumentException if {@code specificGravity} is null.
-     */
-    MassConcentration getMaximumSugarConcentration(SpecificGravity specificGravity);
+    SugarConcentrationProfile getSugarConcentrationProfile();
 
     /**
      * The total solids in apple juice of the given density. Total solids includes both sugar and sugar-free dry
