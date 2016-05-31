@@ -112,8 +112,14 @@ public class WaterTest {
 
     /** getDensity returns 998.2 g/L ±0.05 at 20℃. */
     @Test
-    public void testGetDensityOfWaterAt15Celsius() {
+    public void testGetDensityOfWaterAt20Celsius() {
         assertEquals(998.2, inGramsPerLiter(water.getDensity(new Temperature(20, UnitsOfTemperature.Celsius))), 0.05);
+    }
+
+    /** DENSITY_AT_20_DEGREES_CELSIUS is 998.2 g/L ±0.05. */
+    @Test
+    public void testDensityAt20DegreesCelsius() {
+        assertEquals(998.2, inGramsPerLiter(Water.DENSITY_AT_20_DEGREES_CELSIUS), 0.05);
     }
 
     /** getDensity returns 997.0 g/L ±0.1 at 25℃. */

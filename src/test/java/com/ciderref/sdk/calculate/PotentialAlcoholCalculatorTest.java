@@ -31,7 +31,6 @@ import com.ciderref.sdk.property.MassConcentration;
 import com.ciderref.sdk.property.PercentAlcoholByVolume;
 import com.ciderref.sdk.property.Volume;
 import com.ciderref.sdk.property.units.UnitsOfMass;
-import com.ciderref.sdk.property.units.UnitsOfVolume;
 import org.junit.Test;
 
 /**
@@ -51,7 +50,7 @@ public class PotentialAlcoholCalculatorTest {
     public void testGetSugarConcentration() {
         PercentAlcoholByVolume targetAbv = new PercentAlcoholByVolume(0.06);
         MassConcentration sugarConcentration = new PotentialAlcoholCalculator().getSugarConcentration(targetAbv);
-        assertEquals(1.0, sugarConcentration.getValue(UnitsOfMass.Grams, UnitsOfVolume.Liters), 0);
+        assertEquals(1.0, sugarConcentration.getValueInGramsPerLiter(), 0);
     }
 
 }

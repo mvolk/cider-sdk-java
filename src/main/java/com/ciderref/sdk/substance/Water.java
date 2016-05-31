@@ -31,7 +31,6 @@ import com.ciderref.sdk.property.Temperature;
 import com.ciderref.sdk.property.Volume;
 import com.ciderref.sdk.property.units.UnitsOfMass;
 import com.ciderref.sdk.property.units.UnitsOfTemperature;
-import com.ciderref.sdk.property.units.UnitsOfVolume;
 
 import java.text.DecimalFormat;
 
@@ -46,7 +45,9 @@ public class Water {
     /** The boiling point of pure water under standard pressure. */
     public static final Temperature STANDARD_BOILING_POINT = new Temperature(100, UnitsOfTemperature.Celsius);
 
-    private static final Volume ONE_LITER = new Volume(1, UnitsOfVolume.Liters);
+    /** Commonly-used reference value. */
+    public static final Density DENSITY_AT_20_DEGREES_CELSIUS =
+            new Water().getDensity(new Temperature(20, UnitsOfTemperature.Celsius));
 
     /**
      * The density of pure water at a given temperature. Accurate to within 0.1 g/L between 0℃ and 100℃. Accurate
@@ -96,7 +97,7 @@ public class Water {
                     + (0.0006 * Math.pow(degreesCOver70, 2.0));
             gramsPerLiter = gramsPerLiter + correction;
         }
-        return new Density(new Mass(gramsPerLiter, UnitsOfMass.Grams), ONE_LITER);
+        return new Density(new Mass(gramsPerLiter, UnitsOfMass.Grams), Volume.ONE_LITER);
     }
 
 }

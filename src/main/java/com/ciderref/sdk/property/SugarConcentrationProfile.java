@@ -25,14 +25,11 @@
 package com.ciderref.sdk.property;
 
 import com.ciderref.sdk.property.units.UnitsOfMass;
-import com.ciderref.sdk.property.units.UnitsOfVolume;
 
 /**
  * Represent a standard distribution of sugar concentration as a function of specific gravity in a class of fluid.
  */
 public class SugarConcentrationProfile {
-
-    private static final Volume ONE_LITER = new Volume(1, UnitsOfVolume.Liters);
 
     private final double averageCoefficient;
     private final double standardDeviation;
@@ -72,7 +69,7 @@ public class SugarConcentrationProfile {
         requireSpecificGravity(specificGravity);
         double sg = specificGravity.getValue();
         double sc = averageCoefficient;
-        return new MassConcentration(new Mass(sc * (sg - 1), UnitsOfMass.Grams), ONE_LITER);
+        return new MassConcentration(new Mass(sc * (sg - 1), UnitsOfMass.Grams), Volume.ONE_LITER);
     }
 
     /**
@@ -87,7 +84,7 @@ public class SugarConcentrationProfile {
         requireSpecificGravity(specificGravity);
         double sg = specificGravity.getValue();
         double sc = averageCoefficient - 2 * standardDeviation;
-        return new MassConcentration(new Mass(sc * (sg - 1), UnitsOfMass.Grams), ONE_LITER);
+        return new MassConcentration(new Mass(sc * (sg - 1), UnitsOfMass.Grams), Volume.ONE_LITER);
     }
 
     /**
@@ -102,7 +99,7 @@ public class SugarConcentrationProfile {
         requireSpecificGravity(specificGravity);
         double sg = specificGravity.getValue();
         double sc = averageCoefficient + 2 * standardDeviation;
-        return new MassConcentration(new Mass(sc * (sg - 1), UnitsOfMass.Grams), ONE_LITER);
+        return new MassConcentration(new Mass(sc * (sg - 1), UnitsOfMass.Grams), Volume.ONE_LITER);
     }
 
     private void requireSpecificGravity(SpecificGravity specificGravity) {

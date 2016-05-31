@@ -29,7 +29,6 @@ import com.ciderref.sdk.property.MassConcentration;
 import com.ciderref.sdk.property.PercentAlcoholByVolume;
 import com.ciderref.sdk.property.Volume;
 import com.ciderref.sdk.property.units.UnitsOfMass;
-import com.ciderref.sdk.property.units.UnitsOfVolume;
 
 /**
  * Calculator for potential alcohol by volume. Calculations use the formula given by Warcollier in La Cidrerie (1928).
@@ -44,7 +43,7 @@ public class PotentialAlcoholCalculator {
      * @throws NullPointerException if {@code sugarConcentration} is null.
      */
     public PercentAlcoholByVolume getPotentialAlcohol(MassConcentration sugarConcentration) {
-        return new PercentAlcoholByVolume(0.06 * sugarConcentration.getValue(UnitsOfMass.Grams, UnitsOfVolume.Liters));
+        return new PercentAlcoholByVolume(0.06 * sugarConcentration.getValueInGramsPerLiter());
     }
 
     /**

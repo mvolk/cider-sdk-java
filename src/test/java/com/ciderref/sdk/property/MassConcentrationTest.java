@@ -91,6 +91,15 @@ public class MassConcentrationTest {
                 new Volume(2, UnitsOfVolume.Liters)).getValue(null, null);
     }
 
+    /** getValueInGramsPerLiter is equivalent to getValue(UnitsOfMass.Grams, UnitsOfVolume.Liters). */
+    @Test
+    public void testGetValueInGramsPerLiter() {
+        Mass mass = new Mass(Math.random() * 100, UnitsOfMass.Grams);
+        MassConcentration massConcentration = new MassConcentration(mass, Volume.ONE_LITER);
+        assertEquals(massConcentration.getValue(UnitsOfMass.Grams, UnitsOfVolume.Liters),
+                massConcentration.getValueInGramsPerLiter(), 0);
+    }
+
     /** Comparison to null yields a NPE. */
     @Test(expected = NullPointerException.class)
     public void testCompareToNullThrows() {

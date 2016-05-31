@@ -59,7 +59,7 @@ public class MassConcentration implements Comparable<MassConcentration> {
         }
         this.mass = mass;
         this.volume = volume;
-        this.comparableValue = Math.round(getValue(UnitsOfMass.Grams, UnitsOfVolume.Liters) * 100);
+        this.comparableValue = Math.round(getValueInGramsPerLiter() * 100);
     }
 
     /**
@@ -79,6 +79,15 @@ public class MassConcentration implements Comparable<MassConcentration> {
                     + " cannot be represented without units of measurement for both mass and volume.");
         }
         return mass.getValue(unitsOfMass) / volume.getValue(unitsOfVolume);
+    }
+
+    /**
+     * Convenience method for obtaining mass concentration expressed in grams per liter.
+     *
+     * @return this mass concentration expressed in {@link UnitsOfMass#Grams} per {@link UnitsOfVolume#Liters}.
+     */
+    public final double getValueInGramsPerLiter() {
+        return getValue(UnitsOfMass.Grams, UnitsOfVolume.Liters);
     }
 
     /**

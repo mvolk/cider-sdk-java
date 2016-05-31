@@ -28,11 +28,8 @@ import com.ciderref.sdk.property.Mass;
 import com.ciderref.sdk.property.MassConcentration;
 import com.ciderref.sdk.property.SpecificGravity;
 import com.ciderref.sdk.property.SugarConcentrationProfile;
-import com.ciderref.sdk.property.Temperature;
 import com.ciderref.sdk.property.Volume;
 import com.ciderref.sdk.property.units.UnitsOfMass;
-import com.ciderref.sdk.property.units.UnitsOfTemperature;
-import com.ciderref.sdk.property.units.UnitsOfVolume;
 
 /**
  * Properties of an average apple juice. If you were to blend juices from America, the United Kingdom, France and
@@ -64,11 +61,10 @@ public class GenericAppleJuice implements AppleJuice {
         }
         double sg = specificGravity.getValue();
         double brix = new SugarWater().getBrix(specificGravity).getValue();
-        double pw = new Water().getDensity(new Temperature(20, UnitsOfTemperature.Celsius))
-                .getValue(UnitsOfMass.Grams, UnitsOfVolume.Liters);
+        double pw = Water.DENSITY_AT_20_DEGREES_CELSIUS.getValueInGramsPerLiter();
         double density = sg * pw;
         double totalSolids = density * brix / 100;
-        return new MassConcentration(new Mass(totalSolids, UnitsOfMass.Grams), new Volume(1, UnitsOfVolume.Liters));
+        return new MassConcentration(new Mass(totalSolids, UnitsOfMass.Grams), Volume.ONE_LITER);
     }
 
 }
