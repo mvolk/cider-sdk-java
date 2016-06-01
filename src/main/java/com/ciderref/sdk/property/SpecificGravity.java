@@ -35,12 +35,6 @@ import java.text.NumberFormat;
  */
 public class SpecificGravity implements Comparable<SpecificGravity> {
 
-    /** The lowest specific gravity that the CiderRef SDK supports. */
-    public static final double MINIMUM_SUPPORTED_VALUE = 0.990;
-
-    /** The highest specific gravity that the CiderRef SDK supports. */
-    public static final double MAXIMUM_SUPPORTED_VALUE = 1.100;
-
     private static final NumberFormat FORMAT = new DecimalFormat("0.000");
 
     private final double value;
@@ -49,11 +43,8 @@ public class SpecificGravity implements Comparable<SpecificGravity> {
      * Constructor for values that are already corrected for temperature.
      *
      * @param actualSpecificGravity actual specific gravity, after correcting for temperature
-     * @throws IllegalPropertyValueException if the {@code value} is less than {@link #MINIMUM_SUPPORTED_VALUE} or
-     *         exceeds {@link #MAXIMUM_SUPPORTED_VALUE}.
      */
     public SpecificGravity(double actualSpecificGravity) {
-        checkSpecificGravityValidity(actualSpecificGravity, "specific gravity");
         this.value = actualSpecificGravity;
     }
 
@@ -68,15 +59,10 @@ public class SpecificGravity implements Comparable<SpecificGravity> {
      *         {@code null}.
      * @throws IllegalPropertyValueException if the {@code measuredTemperature} or {@code calibrationTemperature} is
      *         not between {@link Water#STANDARD_FREEZING_POINT} and {@link Water#STANDARD_BOILING_POINT}, inclusive.
-     * @throws IllegalPropertyValueException if the measured or corrected specific gravity is not between
-     *         {@link #MINIMUM_SUPPORTED_VALUE} and {@link #MAXIMUM_SUPPORTED_VALUE}, inclusive.
      */
     public SpecificGravity(double measuredSpecificGravity,
                            Temperature measuredTemperature,
                            Temperature calibrationTemperature) {
-
-        checkSpecificGravityValidity(measuredSpecificGravity, "measured specific gravity");
-
         Water water = new Water();
         double densityOfWaterAtCalibrationTemperature =
                 water.getDensity(calibrationTemperature).getValueInGramsPerLiter();
@@ -84,17 +70,6 @@ public class SpecificGravity implements Comparable<SpecificGravity> {
                 water.getDensity(measuredTemperature).getValueInGramsPerLiter();
         double correctionFactor = densityOfWaterAtCalibrationTemperature / densityOfWaterAtActualTemperature;
         this.value = correctionFactor * measuredSpecificGravity;
-
-        checkSpecificGravityValidity(this.value, "corrected specific gravity");
-    }
-
-    private void checkSpecificGravityValidity(double specificGravity, String name) {
-        if (specificGravity < MINIMUM_SUPPORTED_VALUE || specificGravity > MAXIMUM_SUPPORTED_VALUE) {
-            throw new IllegalPropertyValueException("The " + name + ", " + FORMAT.format(specificGravity)
-                    + ", is not within the range of supported specific gravity values. Specific gravities between "
-                    + FORMAT.format(MINIMUM_SUPPORTED_VALUE) + " and " + FORMAT.format(MAXIMUM_SUPPORTED_VALUE)
-                    + ", inclusive, are supported.");
-        }
     }
 
     /**

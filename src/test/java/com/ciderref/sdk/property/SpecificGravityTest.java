@@ -25,8 +25,6 @@
 package com.ciderref.sdk.property;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import com.ciderref.sdk.property.units.UnitsOfTemperature;
 import com.ciderref.sdk.substance.Water;
@@ -44,103 +42,17 @@ public class SpecificGravityTest {
     private static final Temperature ROOM_TEMPERATURE = new Temperature(68, UnitsOfTemperature.Fahrenheit);
     private static final Temperature BOILING = Water.STANDARD_BOILING_POINT;
 
-    /** Constructor throws if the specific gravity is too low. */
-    @Test(expected = IllegalPropertyValueException.class)
-    public void testConstructorValueTooLow() {
-        new SpecificGravity(SpecificGravity.MINIMUM_SUPPORTED_VALUE - 0.01);
-    }
-
-    /** Constructor throws if the specific gravity is too high. */
-    @Test(expected = IllegalPropertyValueException.class)
-    public void testConstructorValueTooHigh() {
-        new SpecificGravity(SpecificGravity.MAXIMUM_SUPPORTED_VALUE + 0.01);
-    }
-
-    /** Constructor correctly handles the minimum supported value. */
+    /** Constructor correctly handles routine value. */
     @Test
-    public void testConstructorValueLowLimit() {
-        assertEquals(SpecificGravity.MINIMUM_SUPPORTED_VALUE,
-                new SpecificGravity(SpecificGravity.MINIMUM_SUPPORTED_VALUE).getValue(), 0);
+    public void testConstructor() {
+        assertEquals(1.040, new SpecificGravity(1.040).getValue(), 0);
     }
 
-    /** Constructor correctly handles the maximum supported value. */
-    @Test
-    public void testConstructorValueHighLimit() {
-        assertEquals(SpecificGravity.MAXIMUM_SUPPORTED_VALUE,
-                new SpecificGravity(SpecificGravity.MAXIMUM_SUPPORTED_VALUE).getValue(), 0);
-    }
-
-    /** Constructor correctly handles a value midway between the minimum and maximum supported values. */
-    @Test
-    public void testConstructorValueMiddleBoundary() {
-        double middleValue = (SpecificGravity.MINIMUM_SUPPORTED_VALUE + SpecificGravity.MAXIMUM_SUPPORTED_VALUE) / 2;
-        assertEquals(middleValue, new SpecificGravity(middleValue).getValue(), 0);
-    }
-
-    /** Correcting constructor throws if the measured specific gravity is too low. */
-    @Test(expected = IllegalPropertyValueException.class)
-    public void testCorrectingConstructorMeasuredValueTooLow() {
-        new SpecificGravity(SpecificGravity.MINIMUM_SUPPORTED_VALUE - 0.01, ROOM_TEMPERATURE, FREEZING);
-    }
-
-    /** Correcting constructor throws if the measured specific gravity is too high. */
-    @Test(expected = IllegalPropertyValueException.class)
-    public void testCorrectingConstructorMeasuredValueTooHigh() {
-        new SpecificGravity(SpecificGravity.MAXIMUM_SUPPORTED_VALUE + 0.01, ROOM_TEMPERATURE, BOILING);
-    }
-
-    /** Correcting constructor throws if the corrected specific gravity is too low. */
-    @Test
-    public void testCorrectingConstructorCorrectedValueTooLow() {
-        try {
-            new SpecificGravity(SpecificGravity.MINIMUM_SUPPORTED_VALUE, ROOM_TEMPERATURE, BOILING);
-            fail("Expected IllegalPropertyValueException");
-        } catch (IllegalPropertyValueException ex) {
-            assertTrue(ex.getMessage().contains("corrected specific gravity"));
-        }
-    }
-
-    /** Correcting constructor throws if the corrected specific gravity is too high. */
-    @Test
-    public void testCorrectingConstructorCorrectedValueTooHigh() {
-        try {
-            new SpecificGravity(SpecificGravity.MAXIMUM_SUPPORTED_VALUE, ROOM_TEMPERATURE, FREEZING);
-            fail("Expected IllegalPropertyValueException");
-        } catch (IllegalPropertyValueException ex) {
-            assertTrue(ex.getMessage().contains("corrected specific gravity"));
-        }
-    }
-
-    /**
-     * Correcting constructor correctly handles the minimum supported value when measured at the hydrometer's
-     * calibration temperature.
-     */
+    /** Correcting constructor correctly handles measurement at the hydrometer's calibration temperature. */
     @Test
     public void testCorrectingConstructorValueLowLimit() {
-        SpecificGravity sg =
-                new SpecificGravity(SpecificGravity.MINIMUM_SUPPORTED_VALUE, ROOM_TEMPERATURE, ROOM_TEMPERATURE);
-        assertEquals(SpecificGravity.MINIMUM_SUPPORTED_VALUE, sg.getValue(), 0);
-    }
-
-    /**
-     * Correcting constructor correctly handles the maximum supported value when measured at the hydrometer's
-     * calibration temperature.
-     */
-    @Test
-    public void testCorrectingConstructorValueHighLimit() {
-        SpecificGravity sg =
-                new SpecificGravity(SpecificGravity.MAXIMUM_SUPPORTED_VALUE, ROOM_TEMPERATURE, ROOM_TEMPERATURE);
-        assertEquals(SpecificGravity.MAXIMUM_SUPPORTED_VALUE, sg.getValue(), 0);
-    }
-
-    /**
-     * Correcting constructor correctly handles a value midway between the low and high limits that is measured
-     * at the hydrometer's calibration temperature.
-     */
-    @Test
-    public void testCorrectingConstructorValueMiddleBoundary() {
-        double middleValue = (SpecificGravity.MINIMUM_SUPPORTED_VALUE + SpecificGravity.MAXIMUM_SUPPORTED_VALUE) / 2;
-        assertEquals(middleValue, new SpecificGravity(middleValue, ROOM_TEMPERATURE, ROOM_TEMPERATURE).getValue(), 0);
+        SpecificGravity sg = new SpecificGravity(1.015, ROOM_TEMPERATURE, ROOM_TEMPERATURE);
+        assertEquals(1.015, sg.getValue(), 0);
     }
 
     /** Correcting constructor throws if the measured temperature is too high. */
