@@ -32,7 +32,6 @@ import org.junit.Test;
 /**
  * Unit tests for {@link AmericanAppleJuice}.
  */
-@SuppressWarnings("PMD.TestClassWithoutTestCases")
 public class AmericanAppleJuiceTest {
 
     /** Sugar profile matches expectations. */
