@@ -57,12 +57,6 @@ public class DegreesBrixTest {
         assertEquals(25, new DegreesBrix(25).getValue(), 0);
     }
 
-    /** Constructing with more than 25 is not valid. */
-    @Test(expected = IllegalArgumentException.class)
-    public void testConstructorOver25Valid() {
-        new DegreesBrix(25 + Math.ulp(25));
-    }
-
     /**
      * Constructing with {@link Double#NaN} produces an exception.
      */

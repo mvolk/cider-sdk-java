@@ -37,18 +37,17 @@ public class DegreesBrix implements Comparable<DegreesBrix> {
      * Constructor.
      *
      * @param value degrees DegreesBrix.
-     * @throws IllegalArgumentException if {@code value} is less than zero, exceeds 25, or is not a number.
+     * @throws IllegalArgumentException if {@code value} is less than zero, is infinite or is not a number.
      */
     public DegreesBrix(double value) {
         if (Double.isNaN(value)) {
             throw new IllegalArgumentException("A Brix value must be represented by a number.");
         }
+        if (Double.isInfinite(value)) {
+            throw new IllegalArgumentException("A Brix value must be finite.");
+        }
         if (Double.compare(value, 0) < 0) {
             throw new IllegalArgumentException("A Brix value of less than zero is not possible.");
-        }
-        if (Double.compare(value, 25) > 0) {
-            throw new IllegalArgumentException("Brix values in excess of 25 are very unlikely to be encountered in "
-                    + "cidermaking and are not supported here.");
         }
         this.value = value;
         this.comparableBrix = Math.round(value * 100000);
