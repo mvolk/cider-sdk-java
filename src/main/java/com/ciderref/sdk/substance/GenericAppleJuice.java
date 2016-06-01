@@ -24,6 +24,7 @@
 
 package com.ciderref.sdk.substance;
 
+import com.ciderref.sdk.calculate.BrixCalculator;
 import com.ciderref.sdk.property.Mass;
 import com.ciderref.sdk.property.MassConcentration;
 import com.ciderref.sdk.property.SpecificGravity;
@@ -60,7 +61,7 @@ public class GenericAppleJuice implements AppleJuice {
             throw new IllegalArgumentException("Specific gravity is required.");
         }
         double sg = specificGravity.getValue();
-        double brix = new SugarWater().getBrix(specificGravity).getValue();
+        double brix = new BrixCalculator().getDegreesBrix(specificGravity).getValue();
         double pw = Water.DENSITY_AT_20_DEGREES_CELSIUS.getValueInGramsPerLiter();
         double density = sg * pw;
         double totalSolids = density * brix / 100;
