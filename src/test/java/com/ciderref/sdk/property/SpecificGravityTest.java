@@ -42,10 +42,71 @@ public class SpecificGravityTest {
     private static final Temperature ROOM_TEMPERATURE = new Temperature(68, UnitsOfTemperature.Fahrenheit);
     private static final Temperature BOILING = Water.STANDARD_BOILING_POINT;
 
+    /** Constructor throws if the specific gravity is NaN. */
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructorNaN() {
+        new SpecificGravity(Double.NaN);
+    }
+
+    /** Constructor throws if the specific gravity is positive infinity. */
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructorPositiveInfinity() {
+        new SpecificGravity(Double.POSITIVE_INFINITY);
+    }
+
+    /** Constructor throws if the specific gravity is negative infinity. */
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructorNegativeInfinity() {
+        new SpecificGravity(Double.NEGATIVE_INFINITY);
+    }
+
+    /** Constructor throws if the specific gravity is zero. */
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructorZero() {
+        new SpecificGravity(0.0);
+    }
+
+    /** Constructor accepts specific gravity that is minimally more than zero. */
+    @Test
+    public void testConstructorZeroPlusUlp() {
+        assertEquals(0.0 + Math.ulp(0.0), new SpecificGravity(0.0 + Math.ulp(0.0)).getValue(), 0);
+    }
+
     /** Constructor correctly handles routine value. */
     @Test
     public void testConstructor() {
         assertEquals(1.040, new SpecificGravity(1.040).getValue(), 0);
+    }
+
+    /** Correcting constructor throws if the specific gravity is NaN. */
+    @Test(expected = IllegalArgumentException.class)
+    public void testCorrectingConstructorNaN() {
+        new SpecificGravity(Double.NaN, ROOM_TEMPERATURE, ROOM_TEMPERATURE);
+    }
+
+    /** Correcting constructor throws if the specific gravity is positive infinity. */
+    @Test(expected = IllegalArgumentException.class)
+    public void testCorrectingConstructorPositiveInfinity() {
+        new SpecificGravity(Double.POSITIVE_INFINITY, ROOM_TEMPERATURE, ROOM_TEMPERATURE);
+    }
+
+    /** Correcting constructor throws if the specific gravity is negative infinity. */
+    @Test(expected = IllegalArgumentException.class)
+    public void testCorrectingConstructorNegativeInfinity() {
+        new SpecificGravity(Double.NEGATIVE_INFINITY, ROOM_TEMPERATURE, ROOM_TEMPERATURE);
+    }
+
+    /** Correcting constructor throws if the specific gravity is zero. */
+    @Test(expected = IllegalArgumentException.class)
+    public void testCorrectingConstructorZero() {
+        new SpecificGravity(0.0, ROOM_TEMPERATURE, ROOM_TEMPERATURE);
+    }
+
+    /** Correcting constructor accepts specific gravity that is minimally more than zero. */
+    @Test
+    public void testCorrectingConstructorZeroPlusUlp() {
+        assertEquals(0.0 + Math.ulp(0.0),
+                new SpecificGravity(0.0 + Math.ulp(0.0), ROOM_TEMPERATURE, ROOM_TEMPERATURE).getValue(), 0);
     }
 
     /** Correcting constructor correctly handles measurement at the hydrometer's calibration temperature. */

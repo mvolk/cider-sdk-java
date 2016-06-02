@@ -45,6 +45,7 @@ public class SpecificGravity implements Comparable<SpecificGravity> {
      * @param actualSpecificGravity actual specific gravity, after correcting for temperature
      */
     public SpecificGravity(double actualSpecificGravity) {
+        validateSpecificGravity(actualSpecificGravity);
         this.value = actualSpecificGravity;
     }
 
@@ -63,6 +64,7 @@ public class SpecificGravity implements Comparable<SpecificGravity> {
     public SpecificGravity(double measuredSpecificGravity,
                            Temperature measuredTemperature,
                            Temperature calibrationTemperature) {
+        validateSpecificGravity(measuredSpecificGravity);
         Water water = new Water();
         double densityOfWaterAtCalibrationTemperature =
                 water.getDensity(calibrationTemperature).getValueInGramsPerLiter();
@@ -70,6 +72,18 @@ public class SpecificGravity implements Comparable<SpecificGravity> {
                 water.getDensity(measuredTemperature).getValueInGramsPerLiter();
         double correctionFactor = densityOfWaterAtCalibrationTemperature / densityOfWaterAtActualTemperature;
         this.value = correctionFactor * measuredSpecificGravity;
+    }
+
+    private void validateSpecificGravity(double specificGravity) {
+        if (Double.isNaN(specificGravity)) {
+            throw new IllegalArgumentException("Specific gravity must be a number");
+        }
+        if (Double.isInfinite(specificGravity)) {
+            throw new IllegalArgumentException("Specific gravity must be finite");
+        }
+        if (Double.compare(specificGravity, 0) <= 0) {
+            throw new IllegalArgumentException("Specific gravity must be greater than zero");
+        }
     }
 
     /**
