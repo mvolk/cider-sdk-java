@@ -120,6 +120,15 @@ public class BrixCalculatorTest {
         new BrixCalculator().getDegreesBrix(new SpecificGravity(1.17875 + Math.ulp(1.17875)));
     }
 
+    /** Ensure that near-zero negative value correction survives mutation testing. */
+    @Test
+    public void testZeroCorrectionBoundary() {
+        double boundary = 1.0000185477666312;
+        testGetBrix(boundary - Math.ulp(boundary), 0.0, 0.0);
+        testGetBrix(boundary, 0.0, 0.0);
+        testGetBrix(boundary + Math.ulp(boundary), 1.1368683772161603E-13, 0.0);
+    }
+
     /**
      * Confirm getDegreesBrix against NIST table, available online at:
      * http://www.boulder.nist.gov/div838/SelectedPubs/Circular%20440%20Table%20114.pdf.
@@ -151,15 +160,6 @@ public class BrixCalculatorTest {
         testGetBrix(1.08744, 21.0);
         testGetBrix(1.09194, 22.0);
         testGetBrix(1.09647, 23.0);
-    }
-
-    /** Ensure that near-zero negative value correction survives mutation testing. */
-    @Test
-    public void testZeroCorrectionBoundary() {
-        double boundary = 1.0000185477666312;
-        testGetBrix(boundary - Math.ulp(boundary), 0.0, 0.0);
-        testGetBrix(boundary, 0.0, 0.0);
-        testGetBrix(boundary + Math.ulp(boundary), 1.1368683772161603E-13, 0.0);
     }
 
     private void testGetBrix(double sgValue, double expectedBrixValue) {
