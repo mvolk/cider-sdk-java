@@ -25,24 +25,17 @@
 package com.ciderref.sdk.math;
 
 /**
- * A mathematical function that transforms a value to another value.
+ * Indicates that a function cannot be inverted.
  */
-public interface Function {
+public class NotInvertibleException extends RuntimeException {
 
     /**
-     * Applies this function to a value and returns the result.
+     * {@inheritDoc}
      *
-     * @param value an input value
-     * @return the result of applying this formula to the {@code value}.
-    */
-    double applyTo(double value);
-
-    /**
-     * Returns the inverse of this function.
-     *
-     * @return (not null) the inverse of this function.
-     * @throws NotInvertibleException if this function is not invertible.
+     * @param message {@inheritDoc}
      */
-    Function getInverse();
+    public NotInvertibleException(String message) {
+        super(message);
+    }
 
 }

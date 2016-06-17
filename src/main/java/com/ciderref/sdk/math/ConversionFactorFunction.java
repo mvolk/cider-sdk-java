@@ -70,10 +70,13 @@ public final class ConversionFactorFunction implements Function {
      * Get the inverse of this function.
      *
      * @return (not null) the inverse of this function
+     * @throws NotInvertibleException if this conversion factor is zero
      */
     public ConversionFactorFunction getInverse() {
         if (Double.compare(numerator, 0.0) == 0) {
-            return new ConversionFactorFunction(0.0);
+            throw new NotInvertibleException("This function multiplies a value by zero. Such a function is not "
+                    + "invertible, which is to say that there is no function f such that f(x * 0) = x for all "
+                    + "values of x.");
         } else {
             return new ConversionFactorFunction(denominator, numerator);
         }

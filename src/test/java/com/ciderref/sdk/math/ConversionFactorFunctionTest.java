@@ -97,11 +97,10 @@ public class ConversionFactorFunctionTest {
         assertEquals(function.getDenominator(), inverse.getNumerator(), 0);
     }
 
-    /** getInverse() of zero is zero. */
-    @Test
+    /** getInverse() of zero is not possible. */
+    @Test(expected = NotInvertibleException.class)
     public void testInverseOfZero() {
-        double numerator = 0.0;
-        assertEquals(0, new ConversionFactorFunction(numerator).getInverse().getNumerator(), 0);
+        new ConversionFactorFunction(0.0).getInverse();
     }
 
     /** Inverse is true inverse for values exactly representable in double precision floating point. */

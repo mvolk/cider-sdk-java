@@ -24,25 +24,19 @@
 
 package com.ciderref.sdk.math;
 
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
 /**
- * A mathematical function that transforms a value to another value.
+ * Unit tests for {@link NotInvertibleException}.
  */
-public interface Function {
+public class NotInvertibleExceptionTest {
 
-    /**
-     * Applies this function to a value and returns the result.
-     *
-     * @param value an input value
-     * @return the result of applying this formula to the {@code value}.
-    */
-    double applyTo(double value);
-
-    /**
-     * Returns the inverse of this function.
-     *
-     * @return (not null) the inverse of this function.
-     * @throws NotInvertibleException if this function is not invertible.
-     */
-    Function getInverse();
+    /** Constructor correctly maps message. */
+    @Test
+    public void testConstructorWithString() {
+        assertEquals("foo", new NotInvertibleException("foo").getMessage());
+    }
 
 }
