@@ -2,6 +2,8 @@
 
 Hard cider models and calculators to support cidermaking tools.
 
+[![Build Status](https://travis-ci.org/mvolk/cider-sdk-java.svg?branch=master)](https://travis-ci.org/mvolk/cider-sdk-java)
+
 ## Features
 
 ### Type-safe Physical Properties Library
